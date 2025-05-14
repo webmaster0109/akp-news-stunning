@@ -15,6 +15,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://akp-news-app.feueak.easypanel.host/",
+]
 
 # Application definition
 
