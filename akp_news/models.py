@@ -8,7 +8,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 class NewsTagBanner(BaseModel):
     tag_name = models.CharField(max_length=100, null=True, blank=True)
-    news_link = models.URLField(null=True, blank=True, unique=True)
+    news_link = models.URLField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
