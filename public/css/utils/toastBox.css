@@ -1,0 +1,86 @@
+#toastBox {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.toastInbox {
+    font-size: 16px;
+    width: 400px;
+    height: 60px;
+    background-color: #fff;
+    font-weight: 400;
+    margin: 15px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    position: relative;
+    transform: translateX(100%); /* Start off-screen to the right */
+    animation: bounceInRight 0.3s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+}
+
+@keyframes bounceInRight {
+    0% {
+        transform: translateX(100%); /* Start off-screen */
+    }
+    60% {
+        transform: translateX(-20px); /* Overshoot to the left */
+    }
+    80% {
+        transform: translateX(10px); /* Slight recoil */
+    }
+    100% {
+        transform: translateX(0); /* Settle in position */
+    }
+}
+
+.toastInbox i {
+    font-size: 18px;
+    margin: 0 20px;
+}
+
+.toastInbox.toastSuccess i {
+    color: green;
+}
+
+.toastInbox.toastWarning i {
+    color: rgb(245, 145, 14);
+}
+
+.toastInbox.toastError i {
+    color: red;
+}
+
+.toastInbox.toastSuccess::after {
+    background-color: green;
+}
+
+.toastInbox.toastWarning::after {
+    background-color: rgb(245, 145, 14);
+}
+
+.toastInbox.toastError::after {
+    background-color: red;
+}
+
+.toastInbox::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    animation: animate 2s linear forwards;
+}
+
+@keyframes animate {
+    100% {
+        width: 0;
+    }
+}

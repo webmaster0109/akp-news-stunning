@@ -1,0 +1,39 @@
+<div class="section panel overflow-hidden swiper-parent border-top">
+    <div class="section-outer panel py-2 lg:py-4 dark:text-white">
+        <div class="container max-w-xl">
+            <div class="section-inner panel vstack gap-2">
+                <div class="block-layout carousel-layout vstack gap-2 lg:gap-3 panel">
+                    <div class="block-content panel">
+                        <div class="swiper" data-uc-swiper="items: 1; gap: 16; dots: .dot-nav; next: .nav-next; prev: .nav-prev; disable-class: d-none;" data-uc-swiper-s="items: 3; gap: 15;" data-uc-swiper-l="items: 6; gap: 15;">
+                            <div class="swiper-wrapper">
+                                {% for news_tag in news_tags %}
+                                <div class="swiper-slide" style="border: 1px solid #D5D5D5; padding: 5px 8px; border-radius: 25px; text-align: center; background-color:#F6F6F6;">
+                                    <div>
+                                        <article class="post type-post panel uc-transition-toggle gap-2">
+                                            <div class="row child-cols g-2" data-uc-grid>
+                                                <div>
+                                                    <div class="post-header panel vstack justify-between gap-1">
+                                                        <h3 class="post-title m-0 text-truncate-2" style="font-size: 14px; color: #000000;">
+                                                            <a class="text-none hover:text-primary duration-150" href="{{news_tag.news_link}}">{{news_tag.tag_name}}</a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="swiper-nav nav-prev position-absolute top-50 start-0 translate-middle btn btn-alt-primary text-black rounded-circle p-0 border shadow-xs w-32px h-32px z-1">
+                            <i class="icon-1 unicon-chevron-left"></i>
+                        </div>
+                        <div class="swiper-nav nav-next position-absolute top-50 start-100 translate-middle btn btn-alt-primary text-black rounded-circle p-0 border shadow-xs w-32px h-32px z-1">
+                            <i class="icon-1 unicon-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

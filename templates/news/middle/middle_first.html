@@ -1,0 +1,152 @@
+<div class="section panel overflow-hidden">
+    <div class="section-outer panel">
+        <div class="container max-w-xl">
+            <div class="section-inner">
+                <div class="row child-cols-12 lg:child-cols g-4 lg:g-6 col-match" data-uc-grid>
+                    <div class="lg:col-8">
+                        <div class="block-layout grid-layout vstack gap-2 lg:gap-3 panel overflow-hidden">
+                            <div class="block-header panel pt-1 border-top">
+                                <h2 class="h6 ft-tertiary fw-bold ls-0 text-uppercase m-0 text-black dark:text-white">
+                                    <a class="hstack d-inline-flex gap-0 text-none hover:text-primary duration-150" href="blog-category.html">
+                                        <span>राजनीति</span>
+                                        <i class="icon-1 fw-bold unicon-chevron-right"></i>
+                                    </a>
+                                </h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="panel row child-cols-12 md:child-cols g-2 lg:g-4 col-match sep-y" data-uc-grid>
+                                    <div class="col-12 md:col-6 order-0 md:order-1">
+                                        <div>
+                                            {% for article in articles|slice:":1" %}
+                                            {% if article.category.name == "राजनीति" %}
+                                            <article class="post type-post panel uc-transition-toggle vstack gap-2 lg:gap-3 h-100 overflow-hidden uc-dark">
+                                                <div class="post-media panel overflow-hidden h-100">
+                                                    <div class="featured-image bg-gray-25 dark:bg-gray-800 h-100 d-none md:d-block">
+                                                        <canvas class="h-100 w-100"></canvas>
+                                                        <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                                                    </div>
+                                                    <div class="featured-image bg-gray-25 dark:bg-gray-800 ratio ratio-16x9 d-block md:d-none">
+                                                        <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                                                    </div>
+                                                </div>
+                                                <div class="position-cover bg-gradient-to-t from-black to-transparent opacity-90"></div>
+                                                <div class="post-header panel vstack justify-end items-start gap-1 p-2 sm:p-4 position-cover text-white">
+                                                    <div class="post-date hstack gap-narrow fs-7 text-gray-900 dark:text-white text-opacity-60 d-none md:d-flex">
+                                                        <span>{{article.time_since_published}}</span>
+                                                    </div>
+                                                    <h3 class="post-title h5 lg:h4 m-0 max-w-600px text-white text-truncate-2">
+                                                        <a class="text-none text-white" href="{% url 'news_details' article.slug %}">{{article.title}}</a>
+                                                    </h3>
+                                                    <div>
+                                                        <div class="post-meta panel hstack justify-between fs-7 text-white text-opacity-60 mt-1">
+                                                            <div class="meta">
+                                                                <div class="hstack gap-2">
+                                                                    <div>
+                                                                        <div class="post-author hstack gap-1">
+                                                                            <a href="javascript:void(0)" data-uc-tooltip="{{article.author.username}}"><img src="{{article.author.profile_image.url}}" alt="{{article.author.username}}" class="w-24px h-24px rounded-circle"></a>
+                                                                            <a href="javascript:void(0)" class="text-black dark:text-white text-none fw-bold">{{article.author.get_full_name}}</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="actions">
+                                                                <div class="hstack gap-1"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                            {% else %}
+                                            No News
+                                            {% endif %}
+                                            
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="order-1 md:order-0">
+                                        <div class="row child-cols-12 g-2 lg:g-4 sep-x" data-uc-grid>
+                                            {% for article in articles|slice:"2:5" %}
+                                            {% if article.category.name == "राजनीति" %}
+                                            <div>
+                                                <article class="post type-post panel uc-transition-toggle">
+                                                    <div class="row child-cols g-2 lg:g-3" data-uc-grid>
+                                                        <div>
+                                                            <div class="post-header panel vstack justify-between gap-1">
+                                                                <h3 class="post-title h6 m-0 text-truncate-2">
+                                                                    <a class="text-none hover:text-primary duration-150" href="{% url 'news_details' article.slug %}">{{article.title}}</a>
+                                                                </h3>
+                                                                <div class="post-date hstack gap-narrow fs-7 text-gray-900 dark:text-white text-opacity-60 d-none md:d-flex">
+                                                                    <span>{{article.time_since_published}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <div class="post-media panel overflow-hidden max-w-72px min-w-72px">
+                                                                <div class="featured-image bg-gray-25 dark:bg-gray-800 ratio ratio-1x1">
+                                                                    <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                                                                </div>
+                                                                <a href="{% url 'news_details' article.slug %}" class="position-cover"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                            {% else %}<div>No News</div>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-4">
+                        <div class="block-layout grid-layout vstack gap-2 lg:gap-3 panel overflow-hidden">
+                            <div class="block-header panel pt-1 border-top">
+                                <h2 class="h6 ft-tertiary fw-bold ls-0 text-uppercase m-0 text-black dark:text-white">
+                                    <a class="hstack d-inline-flex gap-0 text-none hover:text-primary duration-150" href="blog-category.html">
+                                        <span>राष्ट्रीय</span>
+                                        <i class="icon-1 fw-bold unicon-chevron-right"></i>
+                                    </a>
+                                </h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row child-cols-12 g-2 lg:g-4 sep-x" data-uc-grid>
+                                    {% for article in articles|slice:":4" %}
+                                    {% if article.category.name == "राष्ट्रीय" %}
+                                    <div>
+                                        <article class="post type-post panel uc-transition-toggle">
+                                            <div class="row child-cols g-2 lg:g-3" data-uc-grid>
+                                                <div>
+                                                    <div class="post-header panel vstack justify-between gap-1">
+                                                        <h3 class="post-title h6 m-0 text-truncate-2">
+                                                            <a class="text-none hover:text-primary duration-150" href="{% url 'news_details' article.slug %}">{{article.title}}</a>
+                                                        </h3>
+                                                        <div class="post-date hstack gap-narrow fs-7 text-gray-900 dark:text-white text-opacity-60 d-none md:d-flex">
+                                                            <span>{{article.time_since_published}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="post-media panel overflow-hidden max-w-72px min-w-72px">
+                                                        <div class="featured-image bg-gray-25 dark:bg-gray-800 ratio ratio-1x1">
+                                                            <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                                                        </div>
+                                                        <a href="{% url 'news_details' article.slug %}" class="position-cover"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                    {% else %}<div>No News</div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+{% extends "base/index.html" %}
+
+{% block content %}
+
+<div class="breadcrumbs panel z-1 py-2 bg-gray-25 dark:bg-gray-100 dark:bg-opacity-5 dark:text-white">
+    <div class="container max-w-xl">
+        <ul class="breadcrumb nav-x justify-center gap-1 fs-7 sm:fs-6 m-0">
+            <li><a href="/">मुखपृष्ठ</a></li>
+            <li><i class="unicon-chevron-right opacity-50"></i></li>
+            <li><a href="javascript:void(0);">Hindi News</a></li>
+            <li><i class="unicon-chevron-right opacity-50"></i></li>
+            <li><a href="{% url 'tags_detail' tag.slug %}">{{tag.name}}</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="section py-3 sm:py-6 lg:py-9">
+    <div class="container max-w-xl">
+        <div class="panel vstack gap-3 sm:gap-6 lg:gap-9">
+            <header class="page-header panel vstack text-center">
+                <h1 class="h3 lg:h1">{{tag.name}}</h1>
+                <span class="m-0 opacity-60"
+                    >Total {{tag.get_total_tag}} "{{tag.name}}" News</span>
+            </header>
+            <div class="row g-4 xl:g-8">
+                <div class="col">
+                    <div class="panel text-center">
+                        <div class="row child-cols-12 sm:child-cols-6 lg:child-cols-4 col-match gy-4 xl:gy-6 gx-2 sm:gx-4">
+                            {% for article in tag.news.all %}
+                            <div>
+                                <article class="post type-post panel vstack gap-2">
+                                    <div class="post-image panel overflow-hidden">
+                                        <figure class="featured-image m-0 ratio ratio-16x9 rounded uc-transition-toggle overflow-hidden bg-gray-25 dark:bg-gray-800">
+                                            <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                                            <a href="{% url 'news_details' article.slug %}" class="position-cover" data-caption="{{article.title}}"></a>
+                                        </figure>
+                                        <div class="post-category hstack gap-narrow position-absolute top-0 start-0 m-1 fs-7 fw-bold h-24px px-1 rounded-1 shadow-xs bg-white text-primary">
+                                            <a class="text-none" href="{% url 'category_details' article.category.slug %}">{{article.category.name}}</a>
+                                        </div>
+                                        <div class="position-absolute top-0 end-0 w-150px h-150px rounded-top-end bg-gradient-45 from-transparent via-transparent to-black opacity-50"></div>
+                                        <span class="cstack position-absolute top-0 end-0 fs-6 w-40px h-40px text-white">
+                                            <i class="icon-narrow unicon-play-filled-alt"></i>
+                                        </span>
+                                    </div>
+                                    <div class="post-header panel vstack gap-1 lg:gap-2">
+                                        <h3 class="post-title h6 sm:h5 xl:h4 m-0 text-truncate-2 m-0">
+                                            <a class="text-none" href="{% url 'news_details' article.slug %}">{{article.title}}</a>
+                                        </h3>
+                                        <div>
+                                            <div class="post-meta panel hstack justify-center fs-7 fw-medium text-gray-900 dark:text-white text-opacity-60 d-none md:d-flex">
+                                                <div class="meta">
+                                                    <div class="hstack gap-2">
+                                                        <div>
+                                                            <div class="post-author hstack gap-1">
+                                                                <a href="javascript:void(0);" data-uc-tooltip="Jason Blake"><img src="{{article.author.profile_image.url}}" alt="{{article.author.get_full_name}}" class="w-24px h-24px rounded-circle"></a>
+                                                                <a href="javascript:void(0);" class="text-black dark:text-white text-none fw-bold">{{article.author.get_full_name}}</a>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="post-date hstack gap-narrow">
+                                                                <span>{{article.time_since_published}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="actions">
+                                                    <div class="hstack gap-1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

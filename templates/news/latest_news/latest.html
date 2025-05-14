@@ -1,0 +1,130 @@
+<div id="latest_news" class="latest-news section panel">
+    <div class="section-outer panel py-4 lg:py-6">
+        <div class="container max-w-xl">
+            <div class="section-inner">
+                <div class="content-wrap row child-cols-12 g-4 lg:g-6" data-uc-grid>
+                    <div class="md:col-9">
+                        <div class="main-wrap panel vstack gap-3 lg:gap-6">
+                            <div class="block-layout grid-layout vstack gap-2 panel overflow-hidden">
+                                <div class="block-header panel pt-1 border-top">
+                                    <h2 class="h6 ft-tertiary fw-bold ls-0 text-uppercase m-0 text-black dark:text-white">Latest</h2>
+                                </div>
+                                <div class="block-content">
+                                    <div class="row child-cols-12 g-2 lg:g-4 sep-x">
+                                        {% for article in articles %}
+                                        <div>
+                                            <article class="post type-post panel uc-transition-toggle">
+                                                <div class="row child-cols g-2 lg:g-3" data-uc-grid>
+                                                    <div class="col-auto">
+                                                        <div class="post-media panel overflow-hidden max-w-150px min-w-100px lg:min-w-250px">
+                                                            <div class="featured-image bg-gray-25 dark:bg-gray-800 ratio ratio-3x2">
+                                                                <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                                                            </div>
+                                                            <a href="{% url 'news_details' article.slug %}" class="position-cover"></a>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="post-header panel vstack justify-between gap-1">
+                                                            <h3 class="post-title h5 lg:h4 m-0 text-truncate-2">
+                                                                <a class="text-none hover:text-primary duration-150" href="{% url 'news_details' article.slug %}">{{ article.title }}</a>
+                                                            </h3>
+                                                        </div>
+                                                        <p class="post-excrept ft-tertiary fs-6 text-gray-900 dark:text-white text-opacity-60 text-truncate-2 my-1">{{article.content}}</p>
+                                                        <div class="post-link">
+                                                            <a href="{% url 'news_details' article.slug %}" class="link fs-7 fw-bold text-uppercase text-none mt-1 pb-narrow p-0 border-bottom dark:text-white">
+                                                                <span>Read more</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="block-footer cstack lg:mt-2">
+                                    <a href="#" class="animate-btn gap-0 btn btn-sm btn-alt-primary bg-transparent text-black dark:text-white border w-100">
+                                        <span>Load more posts</span>
+                                        <i class="icon icon-1 unicon-chevron-right"></i>
+                                    </a>
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-3">
+                        <div class="sidebar-wrap panel vstack gap-2 pb-2" data-uc-sticky="end: .content-wrap; offset: 150; media: @m;">
+                            
+                            <div class="widget popular-widget vstack gap-2 p-2 border">
+                                <div class="widget-title text-center">
+                                    <h5 class="ft-tertiary text-uppercase m-0" style="font-size: 16px; font-weight: 600; color: #000000;">लाइव अपडेट</h5>
+                                </div>
+                                <div class="widget-content">
+                                    <div class="row child-cols-12 gx-4 gy-3 sep-x" data-uc-grid>
+                                        {% for update in live_updates %}
+                                        <div>
+                                            <article class="post type-post panel uc-transition-toggle">
+                                                <div class="row child-cols g-2 lg:g-3" data-uc-grid>
+                                                    <div>
+                                                        <div class="hstack items-start gap-3">
+                                                            <span class="h4 lg:h2 ft-tertiary fst-italic text-center text-primary m-0 min-w-24px">{{forloop.counter}}</span>
+                                                            <div class="post-header panel vstack justify-between gap-1">
+                                                                <h3 class="post-title m-0" style="font-size: 16px; font-weight: 600; color: #000000;">
+                                                                    <a class="text-none hover:text-primary duration-150" href="javascript:void(0);">{{update.created_at|date:"h:i A"}}</a>
+                                                                </h3>
+                                                                <div class="post-meta panel hstack justify-between fs-7 text-gray-900 dark:text-white text-opacity-60 d-none md:d-flex">
+                                                                    <div class="meta">
+                                                                        <div class="hstack gap-2">
+                                                                            <div>
+                                                                                <div class="post-date hstack gap-narrow">
+                                                                                    <span>{{update.title}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="actions">
+                                                                        <div class="hstack gap-1"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% include 'ads/latest_news_ads.html' %}
+                            <div class="widget social-widget vstack gap-2 text-center p-2 border">
+                                <div class="widgt-title">
+                                    <h4 class="fs-7 ft-tertiary text-uppercase m-0">Follow @News5</h4>
+                                </div>
+                                <div class="widgt-content">
+                                    <form class="vstack gap-1">
+                                        <input class="form-control form-control-sm fs-6 fw-medium h-40px w-full bg-white dark:bg-gray-800 dark:bg-gray-800 dark:border-white dark:border-opacity-15 dark:border-opacity-15" type="email" placeholder="Your email" required="">
+                                        <button class="btn btn-sm btn-primary" type="submit">Sign up</button>
+                                    </form>
+                                    <ul class="nav-x justify-center gap-1 mt-3">
+                                        <li>
+                                            <a href="index.html#fb" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-facebook"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="index.html#x" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-x-filled"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="index.html#in" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-instagram"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="index.html#yt" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-youtube"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

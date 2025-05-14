@@ -1,0 +1,158 @@
+{% extends "base/index.html" %}
+
+{% block title %}{{article.meta_title}} - {{article.published_at|date:"F d, Y"}}{% endblock %}
+{% block desc %}{{article.meta_description}}{% endblock %}
+{% block keywords %}{{article.meta_keywords}}{% endblock %}
+
+{% block og_tags %}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{article.title}} - Aaj Ka Prahari">
+    <meta property="og:description" content="{{article.content|safe}} | Aaj Ka Prahari">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="हिंदी समाचार मुखपृष्ठ - Aaj Ka Prahari">
+    <meta property="og:image" content="{{article.featured_image.url}}">
+    <meta property="og:image:width" content="1180">
+    <meta property="og:image:height" content="600">
+    <meta property="og:image:type" content="image/png">
+{% endblock %}
+
+{% block twitter_tags %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{article.title}} | Aaj Ka Prahari">
+    <meta name="twitter:description" content="{{article.content|safe}}">
+    <meta name="twitter:image" content="{{article.featured_image.url}}">
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs panel z-1 py-2 bg-gray-25 dark:bg-gray-100 dark:bg-opacity-5 dark:text-white">
+    <div class="container max-w-xl">
+        <ul class="breadcrumb nav-x justify-center gap-1 fs-7 sm:fs-6 m-0">
+            <li><a href="/">मुखपृष्ठ</a></li>
+            <li><i class="unicon-chevron-right opacity-50"></i></li>
+            <li><a href="javascript:void(0);">Hindi News</a></li>
+            <li><i class="unicon-chevron-right opacity-50"></i></li>
+            <li><a href="{% url 'category_details' article.category.slug %}">{{article.category.name}}</a></li>
+            <li><i class="unicon-chevron-right opacity-50"></i></li>
+            <li><span class="opacity-50">न्यूज़</span></li>
+        </ul>
+    </div>
+</div>
+
+<article class="post type-post single-post py-4 lg:py-6 xl:py-9">
+    <div class="container max-w-xl">
+        <div class="post-header">
+            <div class="panel vstack gap-4 md:gap-6 xl:gap-8 text-center">
+                <div class="panel vstack items-center max-w-1000px sm:max-w-1200px mx-auto gap-2 md:gap-3">
+                    <h1 class="h6 sm:h4 lg:h2">{{article.title}}</h1>
+                    <ul class="post-share-icons nav-x gap-1 dark:text-white">
+                        <li>
+                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}&quote={{ article.title|urlencode }}" target="_blank"><i class="unicon-logo-facebook icon-1"></i></a>
+                        </li>
+                        <li>
+                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="https://twitter.com/intent/tweet?text={{ article.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="unicon-logo-x-filled icon-1"></i></a>
+                        </li>
+                        <li>
+                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="javascript:void(0);" onclick="copyCurrentUrl()"><i class="unicon-link icon-1"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <figure class="featured-image m-0">
+                    <figure class="featured-image m-0 ratio ratio-2x1 rounded uc-transition-toggle overflow-hidden bg-gray-25 dark:bg-gray-800">
+                        <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                    </figure>
+                </figure>
+            </div>
+        </div>
+    </div>
+    <div class="panel position-relative mt-4 lg:mt-6 xl:mt-9">
+        <div class="container">
+            <div class="content-wrap row child-col-12 lg:child-cols g-4 lg:g-6">
+                <div class="lg:col-8 uc-first-column">
+                    <div class="max-w-lg">
+                        <div class="post-content panel fs-6 md:fs-5" data-uc-lightbox="animation: scale">
+                            <p class="text-black dark:text-white">{{article.content|safe}}</p>
+                        </div>
+                        <div class="post-footer panel vstack sm:hstack gap-3 justify-between justifybetween border-top py-4 mt-4 xl:py-9 xl:mt-9">
+                            <ul class="nav-x gap-narrow text-primary">
+                                <li><span class="text-black dark:text-white me-narrow">Tags:</span></li>
+                                {% for tag in article.tags.all %}
+                                <li>
+                                    <a href="{% url 'tags_detail' tag.slug %}" class="uc-link gap-2 dark:text-white">{{tag.name}} <span class="text-black dark:text-white"></span></a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% comment %} <ul class="post-share-icons nav-x gap-narrow">
+                                <li class="me-1"><span class="text-black dark:text-white">Share:</span></li>
+                                <li>
+                                    <a class="btn btn-md btn-outline-gray-100 p-0 w-32px lg:w-40px h-32px lg:h-40px text-dark dark:text-white dark:border-gray-600 hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="#"><i class="unicon-logo-facebook icon-1"></i></a>
+                                </li>
+                                <li>
+                                    <a class="btn btn-md btn-outline-gray-100 p-0 w-32px lg:w-40px h-32px lg:h-40px text-dark dark:text-white dark:border-gray-600 hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="#"><i class="unicon-logo-x-filled icon-1"></i></a>
+                                </li>
+                                <li>
+                                    <a class="btn btn-md btn-outline-gray-100 p-0 w-32px lg:w-40px h-32px lg:h-40px text-dark dark:text-white dark:border-gray-600 hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="#"><i class="unicon-link icon-1"></i></a>
+                                </li>
+                            </ul> {% endcomment %}
+                        </div>
+                        
+                        <div id="blog-comment" class="panel border-top pt-2 mt-8 xl:mt-9">
+                            <h4 class="h5 xl:h4 mb-5 xl:mb-6">No Comments</h4>
+
+                            <div class="spacer-half"></div>
+
+                            <div class="spacer-single"></div>
+
+                            <div id="comment-form-wrapper" class="panel pt-2 mt-8 xl:mt-9">
+                                
+                                <h4 class="h5 xl:h4 mb-5 xl:mb-6">Leave a Comment</h4>
+                                <a href="javascript:void(0);" class="btn h-56px w-100 mb-5 xl:mb-6 text-black dark:text-white bg-gray-25 dark:bg-opacity-10 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Be the first to write a comment.</span>
+                                </a>
+                                <div class="comment_form_holder">
+                                    <form class="vstack gap-2">
+                                        <textarea class="form-control h-250px w-full fs-6 bg-white dark:bg-opacity-0 dark:text-white dark:border-gray-300 dark:border-opacity-30" type="text" placeholder="Your comment" required=""></textarea>
+                                        {% if request.user.is_authenticated %}
+                                        <button class="btn btn-primary btn-sm mt-1" type="submit">Write a comment</button>
+                                        {% else %}
+                                        <a href="#uc-account-modal" data-uc-toggle class="btn btn-primary btn-sm mt-1">Login to write comment</a>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-4">
+                    <div class="uc-sticky-placeholder" style="height: 0px; width: 0px; margin: 0px;" hidden=""></div><div class="sidebar-wrap panel vstack gap-2 uc-sticky" data-uc-sticky="end: true;" style="position: sticky; top: 0px;">
+                        <div class="right-sidebar">
+                            {% for ad in random_ads|slice:":1" %}
+                            {% if ad.banner_size == 'News Article Banner 600x700' %}
+                                <section id="media_image-1" class="widget widget_media_image">
+                                    <a href="{{ad.banner_link}}" target="_blank">
+                                    <img width="600" height="700" src="{{ad.banner_image.url}}" class="image wp-image-10098 attachment-full size-full" alt="{{ad.banner_news.title}}" decoding="async" srcset="{{ad.banner_image.url}} 600w, {{ad.banner_image.url}} 257w" sizes="(max-width: 600px) 100vw, 600px">
+                                    </a>
+                                </section>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<script>
+    async function copyCurrentUrl() {
+      try {
+        const url = window.location.href;
+        await navigator.clipboard.writeText(url);
+        alert('URL copied to clipboard');
+        
+      } catch (err) {
+        console.error('Failed to copy URL:', err);
+        alert('Failed to copy URL to clipboard');
+      }
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% for ad in random_ads|slice:":1" %}
+{% if ad.banner_size == 'Home Banner 640x926' %}
+<div class="panel cstack gap-2 h-100">
+    <div>
+        <div class="widget ad-widget vstack gap-2">
+            <div class="widget-title text-center">
+                <h5 class="fs-7 ft-tertiary text-uppercase m-0">Sponsore</h5>
+            </div>
+            <div class="widget-content">
+                <a class="cstack max-w-300px mx-auto text-none" href="{{ad.banner_link}}" target="_blank" rel="nofollow">
+                    <img class="d-none sm:d-block" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
+                    <img class="d-block sm:d-none" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}

@@ -1,0 +1,12 @@
+{% for ad in random_ads|slice:":1" %}
+{% if ad.banner_size == 'Home Banner 640x926' %}
+<div class="widget ad-widget vstack gap-2 text-center p-2 border">
+    <div class="widgt-content">
+        <a class="cstack max-w-300px mx-auto text-none" href="{{ad.banner_link}}" target="_blank" rel="nofollow">
+            <img class="d-block dark:d-none" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
+            <img class="d-none dark:d-block" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endfor %}

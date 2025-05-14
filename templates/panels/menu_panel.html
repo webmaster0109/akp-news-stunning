@@ -1,0 +1,66 @@
+<div id="uc-menu-panel" data-uc-offcanvas="overlay: true;">
+    <div class="uc-offcanvas-bar bg-white text-dark dark:bg-gray-900 dark:text-white">
+        <header class="uc-offcanvas-header hstack justify-between items-center pb-4 bg-white dark:bg-gray-900">
+            <div class="uc-logo">
+                <a href="index.html" class="h5 text-none text-gray-900 dark:text-white">
+                    <img class="w-150px" src="/media/images/logo/akp_logo_new.jpg" alt="News5" data-uc-svg>
+                </a>
+            </div>
+            <button class="uc-offcanvas-close p-0 icon-3 btn border-0 dark:text-white dark:text-opacity-50 hover:text-primary hover:rotate-90 duration-150 transition-all" type="button">
+                <i class="unicon-close"></i>
+            </button>
+        </header>
+
+        <div class="panel">
+            <form id="search-panel" class="form-icon-group vstack gap-1 mb-3" data-uc-sticky="">
+                <input type="email" class="form-control form-control-md fs-6" placeholder="Search..">
+                <span class="form-icon text-gray">
+                    <i class="unicon-search icon-1"></i>
+                </span>
+            </form>
+            <ul class="nav-y gap-narrow fw-bold fs-5" data-uc-nav>
+                <li>
+                    <a href="/">मुखपृष्ठ</a>
+                </li>
+                {% for category in categories %}
+                <li><a href="{% url 'category_details' category.slug %}">{{category.name}}</a></li>
+                {% endfor %}
+
+                <li class="hr opacity-10 my-1"></li>
+                {% if user.is_authenticated %}
+                <li>
+                    <span>{{user.first_name}} {{user.last_name}}</span>
+                </li>
+                <li><a href="#uc-cart-panel" data-uc-toggle>Profile</a></li>
+                {% comment %} <li>
+                    <a href="#logout-user" id="logoutUser" >Sign out</a>
+                    <form id="logoutUserForm" style="display: none;">
+                        {% csrf_token %}
+                    </form>
+                </li> {% endcomment %}
+                {% else %}
+                <li><a href="#uc-account-modal" data-uc-toggle>Sign in</a></li>
+                {% endif %}
+            </ul>
+            <ul class="social-icons nav-x mt-4">
+                <li>
+                    <a href="index.html#"><i class="unicon-logo-medium icon-2"></i></a>
+                    <a href="index.html#"><i class="unicon-logo-x-filled icon-2"></i></a>
+                    <a href="index.html#"><i class="unicon-logo-instagram icon-2"></i></a>
+                    <a href="index.html#"><i class="unicon-logo-pinterest icon-2"></i></a>
+                </li>
+            </ul>
+            <div class="py-2 hstack gap-2 mt-4 bg-white dark:bg-gray-900" data-uc-sticky="position: bottom">
+                <div class="vstack gap-1">
+                    <span class="fs-7 opacity-60">Select theme:</span>
+                    <div class="darkmode-trigger" data-darkmode-switch="">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider fs-5"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
