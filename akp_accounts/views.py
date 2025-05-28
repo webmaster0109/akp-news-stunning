@@ -33,3 +33,27 @@ def logout_attempt(request):
         return JsonResponse({'status': 'error', 'message': 'Invalid method requested'}, status=401)
     logout(request)
     return JsonResponse({'status': 'success', 'message': 'logging out...'}, status=200)
+
+
+def register_attempt(request):
+
+    if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if not first_name or not last_name or not email or not password:
+            return JsonResponse({'status': 'error', 'message': 'All fields are required'}, status=400)
+        
+        if CustomUser.objects.filter(email=email).exists():
+            return JsonResponse({'status': 'error', 'message': 'Username already exists'}, status=400)
+        
+        if CustomUser.objects.filter(email=email).exists():
+            return JsonResponse({'status': 'error', 'message': 'Email already exists'}, status=400)
+        
+        user_obj = CustomUser.objects.create_user(username=email.split('@')[0], email=email, password=password)
+        user_obj.save()
+        return JsonResponse({'status': 'success', 'message': 'User created successfully'}, status=200)
+
+    return render(request, template_name="register.html")
