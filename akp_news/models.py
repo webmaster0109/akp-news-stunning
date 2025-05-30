@@ -155,19 +155,58 @@ class NewsComment(BaseModel):
     
     class Meta:
         ordering = ['-created_at']
+
+    def time_since_published(self):
+        
+        if not self.created_at:
+            return "unpublished"
+
+        now = timezone.now()
+        diff = now - self.created_at
+
+        # seconds
+        seconds = diff.total_seconds()
+        if seconds < 60:
+            return "just now" if seconds < 5 else f"{int(seconds)} seconds ago"
+
+        # minutes
+        minutes = seconds / 60
+        if minutes < 60:
+            m = int(minutes)
+            return f"{m} min{'s' if m != 1 else ''} ago"
+
+        # hours
+        hours = minutes / 60
+        if hours < 24:
+            h = int(hours)
+            return f"{h} hour{'s' if h != 1 else ''} ago"
+
+        # days
+        days = diff.days
+        if days < 30:
+            return f"{days} day{'s' if days != 1 else ''} ago"
+
+        # months (approximate)
+        months = days // 30
+        if months < 12:
+            return f"{months} month{'s' if months != 1 else ''} ago"
+
+        # years
+        years = days // 365
+        return f"{years} year{'s' if years != 1 else ''} ago"
     
     def __str__(self):
-        return f"Comment by {self.author} on {self.news.title}"
+        return f"Comment by {self.author.get_full_name() if hasattr(self.author, 'get_full_name') else self.author.username} on {self.news.title}"
     
-    @property
-    def is_reply(self):
-        """Check if this comment is a reply to another comment."""
-        return self.parent is not None
+    # @property
+    # def is_reply(self):
+    #     """Check if this comment is a reply to another comment."""
+    #     return self.parent is not None
     
-    @property
-    def get_replies(self):
-        """Get all replies to this comment."""
-        return self.replies.filter(is_approved=True)
+    # @property
+    # def get_replies(self):
+    #     """Get all replies to this comment."""
+    #     return self.replies.filter(is_approved=True)
 
 
 class LiveUpdates(BaseModel):
