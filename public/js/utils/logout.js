@@ -20,7 +20,7 @@ async function logoutAuthentication(e) {
         if (response.ok) {
             createToast(result.message, 'Success');
             setTimeout(() => {
-                window.location.replace('/');
+                window.location.reload();
             }, 2000);
         } else {
             createToast(result.message, 'Warning');

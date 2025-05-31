@@ -9,6 +9,8 @@ class CustomUser(AbstractUser):
     profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
 
+    epaper_downloads = models.PositiveIntegerField(default=0, help_text="Number of E-Paper downloads")
+
     def __str__(self):
         return self.username
     

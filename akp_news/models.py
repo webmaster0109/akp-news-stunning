@@ -5,6 +5,7 @@ from Base.base import HomeBaseModel
 from django.utils import timezone
 from datetime import timedelta
 from django_ckeditor_5.fields import CKEditor5Field
+from django.urls import NoReverseMatch, reverse
 
 class NewsTagBanner(BaseModel):
     tag_name = models.CharField(max_length=100, null=True, blank=True)
@@ -74,6 +75,15 @@ class News(HomeBaseModel):
     class Meta:
         verbose_name_plural = "News Articles"
         ordering = ['-published_at']
+
+    def get_absolute_url(self):
+        try:
+            if hasattr(self, 'slug') and self.slug:
+                return reverse('news_details', kwargs={'slug': self.slug})
+        except NoReverseMatch:
+            return "#"
+        return "#"
+    
 
     def time_since_published(self):
         

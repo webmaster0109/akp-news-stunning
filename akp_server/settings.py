@@ -1,5 +1,9 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+from urllib.parse import urlparse
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,6 +80,18 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+# tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': tmpPostgres.path.replace('/', ''),
+#         'USER': tmpPostgres.username,
+#         'PASSWORD': tmpPostgres.password,
+#         'HOST': tmpPostgres.hostname,
+#         'PORT': 5432,
+#     }
+# }
 
 
 # Password validation
@@ -100,14 +116,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-in"
 
 TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

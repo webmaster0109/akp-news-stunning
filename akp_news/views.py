@@ -6,6 +6,9 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
+from akp_epapers.models import Epaper
+from .search import perform_search
 # Create your views here.
 
 
@@ -19,7 +22,7 @@ def index_akp_news(request):
     live_updates = LiveUpdates.objects.all().order_by('-created_at').filter(is_active=True)
 
     active_ads = Advertisement.objects.filter(is_active=True)
-    random_ads = active_ads.order_by('?') if active_ads.exists() else []
+    random_ads = active_ads.order_by('?') if active_ads.exists() else None
 
     context = {
         'news_tags': news_tags,
@@ -50,6 +53,92 @@ def news_details(request, slug):
 
     return render(request, template_name='news/details/news_details.html', context=context)
 
+class SearchResultsView(ListView):
+    model = News
+    template_name = 'news/details/search_details.html'
+    context_object_name = 'news_list'
+    paginate_by = 12
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', '')
+        sort_by = self.request.GET.get('sort_by', 'latest')
+        return perform_search(query, sort_by)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
+        context['result_count'] = self.get_queryset().count()
+        context['sort_by'] = self.request.GET.get('sort', 'latest')
+        return context
+
+def live_search_api(request):
+    query = request.GET.get('q', None)
+    results_data = []
+
+    if query and len(query.strip()) > 0:
+        search_results = perform_search(query.strip(), sort_by='latest')
+        query_lower = query.strip().lower() # Lowercase query once for snippet matching
+
+        for news_item in search_results[:5]: # Limit to top 5 suggestions
+            title_str = news_item.title if news_item.title else ""
+            content_str = news_item.content if news_item.content else ""
+            
+            item_url = "#" # Default URL if get_absolute_url fails or is not defined
+            try:
+                # Ensure get_absolute_url() is defined on your News model and handles potential errors
+                if hasattr(news_item, 'get_absolute_url') and callable(news_item.get_absolute_url):
+                    item_url = news_item.get_absolute_url()
+            except Exception:
+                # Log this error in a real application
+                pass 
+
+            snippet_text = ""
+            if content_str:
+                content_lower = content_str.lower()
+                start_index = content_lower.find(query_lower)
+                
+                snippet_start = 0
+                if start_index > 50 : # If query is found far into the content
+                    snippet_start = start_index - 40 # Start a bit before the query term
+                elif start_index == -1 and title_str.lower().find(query_lower) != -1: # Query in title but not content
+                    snippet_start = 0 # Just show start of content
+                elif start_index == -1: # Query not in content or title for this item (unlikely if search works)
+                    snippet_start = 0
+
+                snippet_start = max(0, snippet_start) # Ensure snippet_start is not negative
+
+                if snippet_start < len(content_str):
+                    temp_snippet = content_str[snippet_start : snippet_start + 120] # Max 120 chars for snippet
+                    
+                    # Add leading ellipsis if not starting from the beginning and query was actually in content here
+                    if snippet_start > 0 and start_index != -1 and start_index > snippet_start :
+                         snippet_text = "..." + temp_snippet
+                    else:
+                        snippet_text = temp_snippet
+
+                    if len(content_str) > snippet_start + 120:
+                        snippet_text += "..."
+                elif len(content_str) > 0: # If snippet_start is out of bounds but content exists
+                    snippet_text = content_str[:120]
+                    if len(content_str) > 120:
+                        snippet_text += "..."
+                
+            if not snippet_text and title_str: # Fallback to title if no content snippet
+                snippet_text = title_str[:120]
+                if len(title_str) > 120:
+                     snippet_text += "..."
+            
+            # Ensure snippet is plain text (escape HTML if content can have it)
+            # snippet_text = escape(snippet_text) # Uncomment if your content has HTML
+
+            results_data.append({
+                'title': title_str,
+                'url': item_url,
+                'snippet': snippet_text
+            })
+            
+    return JsonResponse({'results': results_data})
+
 @login_required
 @require_POST
 def add_comment_view(request):
@@ -64,18 +153,10 @@ def add_comment_view(request):
 
     # Basic validation
     if not content:
-        # messages.error(request, 'Comment content cannot be empty.')
+        return JsonResponse({'status': 'error', 'message': 'Comment content is required'}, status=400)
         # Redirect back to the news page, or a more specific error handling page
-        if news_id:
-            try:
-                news_article_for_redirect = get_object_or_404(News, pk=news_id)
-                # Assuming your news detail URL is named 'news_detail_by_slug' and uses a slug
-                # Adjust if your URL pattern is different (e.g., uses pk)
-                return redirect('news_details', slug=news_article_for_redirect.slug)
-            except: # Fallback if news_id is bad or slug logic fails
-                 return redirect('index_akp_news') # Or some other appropriate fallback
-        return redirect('index_akp_news') # Fallback if news_id is missing
-
+    if not news_id:
+        return JsonResponse({'status': 'error', 'message': 'News ID is required'}, status=400)
     try:
         news_article = get_object_or_404(News, pk=news_id)
         parent_comment = None
@@ -89,11 +170,11 @@ def add_comment_view(request):
             content=content,
             parent=parent_comment
         )
+        return JsonResponse({'status': 'success', 'message': 'Comment submitted successfully. Now waiting for approval!'}, status=200)
         # messages.success(request, 'Your comment has been posted successfully!')
         # Redirect back to the news detail page
         # Ensure you have a URL pattern named 'news_detail_by_slug' that takes a slug,
         # or 'news_detail_by_id' that takes an ID, etc.
-        return redirect('news_details', slug=news_article.slug) # Adjust 'slug' if your model uses a different field for URL
 
     except News.DoesNotExist:
         # messages.error(request, 'News article not found.')
@@ -117,8 +198,12 @@ def add_comment_view(request):
 
 def category_details(request, slug):
     category = get_object_or_404(NewsCategory, slug=slug)
+
+    epapers = Epaper.objects.all()
+
     context = {
-        'category': category
+        'category': category,
+        'epapers': epapers
     }
     return render(request, template_name='news/details/category_details.html', context=context)
 

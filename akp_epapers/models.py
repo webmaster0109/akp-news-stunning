@@ -11,6 +11,9 @@ class Epaper(HomeBaseModel):
 
     class Meta:
         verbose_name_plural = "E-Papers"
+    
+    def __str__(self):
+        return self.meta_title
 
 
 class EpaperDownload(BaseModel):

@@ -1,0 +1,56 @@
+<div class="section py-3 sm:py-6 lg:py-9">
+    <div class="container max-w-xl">
+        <div class="panel vstack gap-3 sm:gap-6 lg:gap-9">
+            <header class="page-header panel vstack text-center">
+                <h1 class="h3 lg:h1">{{category.name}}</h1>
+            </header>
+            <div class="row g-4 xl:g-8">
+                <div class="col">
+                    <div class="panel text-center">
+                        <div class="row child-cols-12 sm:child-cols-6 lg:child-cols-4 col-match gy-4 xl:gy-6 gx-2 sm:gx-4">
+                            {% for epaper in epapers %}
+                            <div>
+                                <article class="post type-post panel vstack gap-2">
+                                    <div class="post-image panel overflow-hidden">
+                                        <figure class="featured-image m-0 ratio ratio-16x9 rounded uc-transition-toggle overflow-hidden bg-gray-25 dark:bg-gray-800">
+                                            <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="/media/images/pdf/adobe-pdf3324.jpg" data-src="/media/images/pdf/adobe-pdf3324.jpg" alt="{{epaper.meta_title}}" data-uc-img="loading: lazy">
+                                        </figure>
+                                        <div class="post-category hstack gap-narrow position-absolute top-0 start-0 m-1 fs-7 fw-bold h-24px px-1 rounded-1 shadow-xs bg-white text-primary">
+                                            <a class="text-none" href="">{{article.category.name}}</a>
+                                        </div>
+                                        
+                                    <div class="post-header panel vstack gap-1 lg:gap-2">
+                                        <h3 class="post-title h6 sm:h5 xl:h4 m-0 text-truncate-2 m-0">
+                                            <a class="text-none" href="">{{epaper.meta_title}}</a>
+                                        </h3>
+                                        {% if request.user.is_authenticated %}
+                                        {% with user_download_count=request.user.epaper_downloads download_limit=5 %}
+                                        {% if user_download_count < download_limit %}
+                                            <a class="btn btn-primary btn-sm" href="{% url 'download_epaper' epaper.id %}">
+                                                <i class="icon-narrow unicon-download"></i>
+                                                <span>Download</span>
+                                            </a>
+                                        {% else %}
+                                             <p class="text-danger-600 font-semibold">
+                                                You have reached your free download limit ({{ download_limit }} e-papers).
+                                            </p>
+                                        {% endif %}
+                                        {% endwith %}
+                                        {% else %}
+                                        <a href="#uc-account-modal" data-uc-toggle class="btn btn-primary btn-sm mt-1">
+                                            <i class="icon-narrow unicon-download"></i>
+                                            <span>Login to download</span>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </article>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

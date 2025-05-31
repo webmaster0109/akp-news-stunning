@@ -4,11 +4,69 @@
             <i class="unicon-close"></i>
         </button>
         <div class="panel w-100 sm:w-500px px-2 py-10">
-            <h3 class="h1 text-center">Search</h3>
-            <form class="hstack gap-1 mt-4 border-bottom p-narrow dark:border-gray-700" action="https://html.themewant.com/news5/main/index.html?">
+            <h3 class="h1 text-center">AKP News Search</h3>
+            <form class="hstack gap-1 mt-4 border-bottom p-narrow dark:border-gray-700" action="{% url 'search_results' %}" method="GET" id="full-search-form">
                 <span class="d-inline-flex justify-center items-center w-24px sm:w-40 h-24px sm:h-40px opacity-50"><i class="unicon-search icon-3"></i></span>
-                <input type="search" name="q" class="form-control-plaintext ms-1 fs-6 sm:fs-5 w-full dark:text-white" placeholder="Type your keyword.." aria-label="Search" autofocus>
+                <input type="text" id="live-search-input" name="q" class="form-control-plaintext ms-1 fs-6 sm:fs-5 w-full dark:text-white" placeholder="Search for news.." aria-label="Search" autofocus autocomplete="off">
+                {% comment %} <button class="btn btn-primary btn-sm" type="submit">Search</button> {% endcomment %}
             </form>
+            <div id="live-search-results-container" class="mt-4"></div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('live-search-input');
+        const resultsContainer = document.getElementById('live-search-results-container');
+        let debounceTimer;
+
+        const debounce = (callback, time) => {
+            return function(...args) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    callback.apply(this, args);
+                }, time);
+            };
+        };
+
+        const fetchLiveResults = async () => {
+            const query = searchInput.value.trim();
+
+            if (query.length < 1) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            resultsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400">Searching...</p>';
+
+            try {
+                const response = await fetch(`/api/live-search/?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.results && data.results.length > 0) {
+                    let resultsHtml = '<ul class="list-group list-group-flush">';
+                    data.results.forEach(item => {
+                        console.log(item.url);
+                        resultsHtml += `
+                            <li class="list-group-item">
+                                <a href="${item.url}" class="text-decoration-none">
+                                    <h6 class="mb-1">${item.title}</h6>
+                                </a>
+                            </li>
+                        `;
+                    });
+                    resultsHtml += '</ul>';
+                    resultsContainer.innerHTML = resultsHtml;
+                } else {
+                    resultsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400">No results found.</p>';
+                }
+            } catch {
+                console.error('Live search failed:', error);
+                resultsContainer.innerHTML = '<p class="text-danger">Search is currently unavailable.</p>';
+            }
+        };
+
+        searchInput.addEventListener('input', debounce(fetchLiveResults, 300));
+    })
+</script>

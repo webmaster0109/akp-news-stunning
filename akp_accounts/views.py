@@ -8,25 +8,24 @@ from .models import CustomUser
 def login_attempt(request):
 
     if request.method == "POST":
-        if request.method == "POST":
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-            if not username or not password:
-                return JsonResponse({'status': 'error', 'message': 'All fields are required'}, status=400)
+        if not email or not password:
+            return JsonResponse({'status': 'error', 'message': 'All fields are required'}, status=400)
             
-            user_obj = authenticate(request, username=username, password=password)
+        user_obj = authenticate(request, username=str(email).split('@')[0], password=password)
 
-            if user_obj:
-                login(request, user_obj)
-                return JsonResponse({'status': 'success', 'message': 'login successfully'}, status=200)
-            
+        if user_obj:
+            login(request, user_obj)
+            return JsonResponse({'status': 'success', 'message': 'login successfully'}, status=200)
+        else:
             return JsonResponse({'status': 'error', 'message': 'Invalid credentials'}, status=401)
         
-        if request.user.is_authenticated:
-            return redirect('index_akp_news')
+    if request.user.is_authenticated:
+        return redirect('index_akp_news')
         
-        return render(request, template_name="login.html")
+    return render(request, template_name="login.html")
 
 def logout_attempt(request):
     if request.method != "POST":
@@ -46,14 +45,21 @@ def register_attempt(request):
         if not first_name or not last_name or not email or not password:
             return JsonResponse({'status': 'error', 'message': 'All fields are required'}, status=400)
         
-        if CustomUser.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(username=str(email).split('@')[0]).exists():
             return JsonResponse({'status': 'error', 'message': 'Username already exists'}, status=400)
         
         if CustomUser.objects.filter(email=email).exists():
             return JsonResponse({'status': 'error', 'message': 'Email already exists'}, status=400)
         
-        user_obj = CustomUser.objects.create_user(username=email.split('@')[0], email=email, password=password)
+        user_obj = CustomUser.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            username=str(email).split('@')[0], 
+            email=email
+        )
+        user_obj.set_password(password)
         user_obj.save()
+        login(request, user_obj)
         return JsonResponse({'status': 'success', 'message': 'User created successfully'}, status=200)
 
     return render(request, template_name="register.html")

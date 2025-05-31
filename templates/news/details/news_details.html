@@ -25,6 +25,32 @@
 {% endblock %}
 
 {% block content %}
+
+<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-9999 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0" id="success-modal-content">
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Hi, {{request.user.get_full_name}}</h3>
+                </div>
+            </div>
+            <div class="mb-4">
+                <p id="success-message" class="text-sm text-gray-600 dark:text-gray-300"></p>
+            </div>
+            <div class="flex justify-end">
+                <button id="success-modal-close" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="breadcrumbs panel z-1 py-2 bg-gray-25 dark:bg-gray-100 dark:bg-opacity-5 dark:text-white">
     <div class="container max-w-xl">
         <ul class="breadcrumb nav-x justify-center gap-1 fs-7 sm:fs-6 m-0">
@@ -174,138 +200,216 @@
 </script>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const commentsData = JSON.parse(document.getElementById('comments-data').textContent || '[]');
-            const commentsListContainer = document.getElementById('comments-list');
-            const commentCountElement = document.getElementById('comment-count');
-            const noCommentsMessage = document.getElementById('no-comments-message');
-            // The main form submission is now handled by standard HTML, not JS.
+document.addEventListener('DOMContentLoaded', function () {
+    const commentsData = JSON.parse(document.getElementById('comments-data').textContent || '[]');
+    const commentsListContainer = document.getElementById('comments-list');
+    const commentCountElement = document.getElementById('comment-count');
+    const noCommentsMessage = document.getElementById('no-comments-message');
+    const commentForm = document.getElementById('add-comment-form');
 
-            // --- RENDER FUNCTIONS (for initial display) ---
-            function renderComment(comment, depth = 0) {
-                const commentElement = document.createElement('div');
-                commentElement.className = 'comment-item py-2';
-                commentElement.id = `comment-${comment.id}`; // For targeting replies
-                if (depth > 0) {
-                    commentElement.classList.add('ml-6', 'md:ml-10', 'pl-4', 'comment-thread');
-                }
+    // Add news ID to global scope for reply forms
+    window.newsId = `{{ article.id }}`;
 
-                const avatarPlaceholder = `<div class="w-25px h-25px md:w-30px md:h-30px lg:w-40px lg:h-40px bg-danger-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">${comment.author.substring(0, 1).toUpperCase()}</div>`;
-                
-                // Reply form HTML structure
-                // Note: news.id would need to be available here if not passed differently.
-                // For simplicity, assuming news.id is available in the global scope or passed to renderComment if needed.
-                // However, since this is a standard form, it's better if news.id is part of the form itself.
-                const newsIdForReplyForm = "{{ article.id }}"; // This needs to be the actual news ID from Django context
+     // Modal functions
+    function showModal(type, message) {
+        const modal = document.getElementById(`${type}-modal`);
+        const modalContent = document.getElementById(`${type}-modal-content`);
+        const messageElement = document.getElementById(`${type}-message`);
+        
+        messageElement.textContent = message;
+        modal.classList.remove('hidden');
+        
+        // Trigger animation
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 50);
+    }
 
-                let replyFormHtml = '';
-                replyFormHtml = `
-                    <div style="display: none;" class="comment-reply-form-container mt-3" id="reply-form-container-${comment.id}">
-                        <form method="POST" action="{% url 'add_comment' %}" class="p-3 bg-slate-50 rounded-md border border-slate-200">
-                            {% csrf_token %}
-                            <input type="hidden" name="news_id" value="${newsIdForReplyForm}">
-                            <input type="hidden" name="parent_id" value="${comment.id}">
-                            <textarea name="content" rows="2" class="w-full p-2 border border-gray-300 rounded-md shadow-sm text-sm" placeholder="Write a reply..." required></textarea>
-                            <div class="mt-2 text-right">
-                                <button type="submit" class="text-xs px-3 py-1.5 bg-danger-500 text-white rounded-md hover:bg-danger-600">Post Reply</button>
-                                <button type="button" class="cancel-reply-button text-xs px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 ml-2">Cancel</button>
-                            </div>
-                        </form>
-                    </div>`;
+    function hideModal(type) {
+        const modal = document.getElementById(`${type}-modal`);
+        const modalContent = document.getElementById(`${type}-modal-content`);
+        
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
 
-                commentElement.innerHTML = `
-                    <div class="flex items-start space-x-3">
-                        ${avatarPlaceholder}
-                        <div class="flex-1">
-                            <p class="text-sm font-semibold text-gray-800">${comment.author}</p>
-                            <p class="text-gray-700 mt-1 text-sm leading-relaxed">${comment.content.replace(/\n/g, '<br>')}</p>
-                            <div class="mt-2 flex items-center space-x-3 text-xs text-gray-500">
-                                <span>${comment.time_since_published}</span>
-                                {% if user.is_authenticated %}
-                                <button data-comment-id="${comment.id}" class="reply-button text-danger-600 hover:text-danger-800 font-medium">Reply</button>
-                                {% endif %}
-                            </div>
-                        ${replyFormHtml}
-                        </div>
+    // Modal event listeners
+    document.getElementById('success-modal-close').addEventListener('click', () => hideModal('success'));
+    
+    // Close modal when clicking outside
+    document.getElementById('success-modal').addEventListener('click', function(e) {
+        if (e.target === this) hideModal('success');
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            hideModal('success');
+        }
+    });
+
+    // --- RENDER FUNCTIONS (for initial display) ---
+    function renderComment(comment, depth = 0) {
+        const commentElement = document.createElement('div');
+        commentElement.className = 'comment-item py-1';
+        commentElement.id = `comment-${comment.id}`;
+        if (depth > 0) {
+            commentElement.classList.add('ml-6', 'md:ml-10', 'pl-4', 'comment-thread');
+        }
+
+        const avatarPlaceholder = `<div class="w-25px h-25px md:w-30px md:h-30px lg:w-40px lg:h-40px bg-danger-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">${comment.author.substring(0, 1).toUpperCase()}</div>`;
+        
+        // Reply form HTML structure
+        let replyFormHtml = '';
+        replyFormHtml = `
+            <div style="display: none;" class="comment-reply-form-container mt-3" id="reply-form-container-${comment.id}">
+                <form method="POST" class="reply-comment-form p-3 bg-slate-50 rounded-md border border-slate-200" data-parent-id="${comment.id}">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${document.querySelector('[name=csrfmiddlewaretoken]').value}">
+                    <input type="hidden" name="news_id" value="${window.newsId}">
+                    <input type="hidden" name="parent_id" value="${comment.id}">
+                    <textarea name="content" rows="2" class="w-full p-2 border border-gray-300 rounded-md shadow-sm text-sm" placeholder="Write a reply..." required></textarea>
+                    <div class="mt-2 text-right">
+                        <button type="submit" class="text-xs px-3 py-1.5 bg-danger-500 text-white rounded-md hover:bg-danger-600">Post Reply</button>
+                        <button type="button" class="cancel-reply-button text-xs px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 ml-2">Cancel</button>
                     </div>
-                    <div class="replies-container mt-4 space-y-4"></div>`;
+                </form>
+            </div>`;
 
-                const repliesContainer = commentElement.querySelector('.replies-container');
-                if (comment.replies && comment.replies.length > 0) {
-                    comment.replies.forEach(reply => repliesContainer.appendChild(renderComment(reply, depth + 1)));
-                }
-                return commentElement;
-            }
+        commentElement.innerHTML = `
+            <div class="flex items-start space-x-3">
+                ${avatarPlaceholder}
+                <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-800 dark:text-white">${comment.author}</p>
+                    <p class="text-gray-700 dark:text-gray-300 mt-1 text-sm leading-relaxed">${comment.content.replace(/\n/g, '<br>')}</p>
+                    <div class="mt-2 flex items-center space-x-3 text-xs text-gray-500">
+                        <span>${comment.time_since_published}</span>
+                        {% if user.is_authenticated %}
+                        <button data-comment-id="${comment.id}" class="reply-button text-danger-600 hover:text-danger-800 font-medium">Reply</button>
+                        {% endif %}
+                    </div>
+                    ${replyFormHtml}
+                </div>
+            </div>
+            <div class="replies-container mt-2 space-y-4"></div>`;
 
-            function formatCommentDate(dateString) {
-                const date = new Date(dateString);
-                const now = new Date();
-                const diffSeconds = Math.round((now - date) / 1000);
-                const diffMinutes = Math.round(diffSeconds / 60);
-                if (diffMinutes < 1) return `just now`;
-                if (diffMinutes < 60) return `${diffMinutes}m ago`;
-                const diffHours = Math.round(diffMinutes / 60);
-                if (diffHours < 24) return `${diffHours}h ago`;
-                const diffDays = Math.round(diffHours / 24);
-                if (diffDays < 7) return `${diffDays}d ago`;
-                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            }
-            
-            function countTotalComments(commentsArr) {
-                let count = 0;
-                commentsArr.forEach(comment => {
-                    count++;
-                    if (comment.replies && comment.replies.length > 0) {
-                        count += countTotalComments(comment.replies);
-                    }
-                });
-                return count;
-            }
+        const repliesContainer = commentElement.querySelector('.replies-container');
+        if (comment.replies && comment.replies.length > 0) {
+            comment.replies.forEach(reply => repliesContainer.appendChild(renderComment(reply, depth + 1)));
+        }
+        return commentElement;
+    }
 
-            // --- INITIAL RENDER ---
-            function initialRender() {
-                if (commentsData && commentsData.length > 0) {
-                    commentsListContainer.innerHTML = '';
-                    commentsData.forEach(comment => commentsListContainer.appendChild(renderComment(comment)));
-                    noCommentsMessage.style.display = 'none';
-                } else {
-                    noCommentsMessage.style.display = 'block';
-                }
-                commentCountElement.textContent = countTotalComments(commentsData);
-            }
+    // Universal form submission handler
+    async function handleFormSubmission(form) {
+        const formData = new FormData(form);
+        const csrfToken = formData.get('csrfmiddlewaretoken') || document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            // --- EVENT LISTENERS for UI (Show/Hide Reply Forms) ---
-            commentsListContainer.addEventListener('click', function(event) {
-                const target = event.target;
-                
-                if (target.matches('.reply-button')) {
-                    const commentId = target.dataset.commentId;
-                    const replyFormContainer = document.querySelector(`#reply-form-container-${commentId}`);
-                    if (replyFormContainer) {
-                        const isVisible = replyFormContainer.style.display === 'block';
-                        // Hide all other forms
-                        document.querySelectorAll('.comment-reply-form-container').forEach(form => {
-                            if (form.id !== `reply-form-container-${commentId}`) {
-                                form.style.display = 'none';
-                            }
-                        });
-                        // Toggle current form
-                        replyFormContainer.style.display = isVisible ? 'none' : 'block';
-                        if (!isVisible) replyFormContainer.querySelector('textarea').focus();
-                    }
-                }
-
-                if (target.matches('.cancel-reply-button')) {
-                    const replyFormContainer = target.closest('.comment-reply-form-container');
-                    if (replyFormContainer) {
-                        replyFormContainer.style.display = 'none';
-                        replyFormContainer.querySelector('textarea').value = '';
-                    }
-                }
+        try {
+            const response = await fetch('{% url "add_comment" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                body: formData,
             });
 
-            // --- START THE APP ---
-            initialRender();
+            const commentData = await response.json();
+
+            if (response.ok) {
+                // alert(commentData.message);
+                showModal('success', commentData.message);
+                form.reset();
+                
+                // Hide reply form if it's a reply
+                const replyContainer = form.closest('.comment-reply-form-container');
+                if (replyContainer) {
+                    replyContainer.style.display = 'none';
+                }
+            } else {
+                alert(commentData.message || 'Error submitting comment');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to submit comment');
+        }
+    }
+
+    // Main comment form submission
+    if (commentForm) {
+        commentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await handleFormSubmission(this);
         });
+    }
+
+    function countTotalComments(commentsArr) {
+        let count = 0;
+        commentsArr.forEach(comment => {
+            count++;
+            if (comment.replies && comment.replies.length > 0) {
+                count += countTotalComments(comment.replies);
+            }
+        });
+        return count;
+    }
+
+    // --- INITIAL RENDER ---
+    function initialRender() {
+        if (commentsData && commentsData.length > 0) {
+            commentsListContainer.innerHTML = '';
+            commentsData.forEach(comment => commentsListContainer.appendChild(renderComment(comment)));
+            noCommentsMessage.style.display = 'none';
+        } else {
+            noCommentsMessage.style.display = 'block';
+        }
+        commentCountElement.textContent = countTotalComments(commentsData);
+    }
+
+    // --- EVENT LISTENERS for UI (Show/Hide Reply Forms) ---
+    commentsListContainer.addEventListener('click', async function(event) {
+        const target = event.target;
+        
+        if (target.matches('.reply-button')) {
+            const commentId = target.dataset.commentId;
+            const replyFormContainer = document.querySelector(`#reply-form-container-${commentId}`);
+            if (replyFormContainer) {
+                const isVisible = replyFormContainer.style.display === 'block';
+                // Hide all other forms
+                document.querySelectorAll('.comment-reply-form-container').forEach(form => {
+                    if (form.id !== `reply-form-container-${commentId}`) {
+                        form.style.display = 'none';
+                    }
+                });
+                // Toggle current form
+                replyFormContainer.style.display = isVisible ? 'none' : 'block';
+                if (!isVisible) replyFormContainer.querySelector('textarea').focus();
+            }
+        }
+
+        if (target.matches('.cancel-reply-button')) {
+            const replyFormContainer = target.closest('.comment-reply-form-container');
+            if (replyFormContainer) {
+                replyFormContainer.style.display = 'none';
+                replyFormContainer.querySelector('textarea').value = '';
+            }
+        }
+    });
+
+    // Handle reply form submissions using the same function
+    commentsListContainer.addEventListener('submit', async function(event) {
+        if (event.target.matches('.reply-comment-form')) {
+            event.preventDefault();
+            await handleFormSubmission(event.target);
+        }
+    });
+
+    // --- START THE APP ---
+    initialRender();
+})
 </script>
 {% endblock %}
