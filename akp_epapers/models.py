@@ -20,7 +20,6 @@ class EpaperDownload(BaseModel):
     epaper = models.ForeignKey(Epaper, on_delete=models.CASCADE, related_name='downloads')
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='epapers_downloads')
     ip_addr = models.CharField(max_length=50, null=True, blank=True)
-    downloads_limit = models.PositiveIntegerField(default=5)  # Number of downloads allowed per month
 
     class Meta:
         verbose_name_plural = "E-Paper Downloads"
