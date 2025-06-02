@@ -29,7 +29,7 @@
                                                                 <a class="text-none hover:text-primary duration-150" href="{% url 'news_details' article.slug %}">{{ article.title }}</a>
                                                             </h3>
                                                         </div>
-                                                        <p class="post-excrept ft-tertiary fs-6 text-gray-900 dark:text-white text-opacity-60 text-truncate-2 my-1">{{article.content|safe}}</p>
+                                                        <p class="post-excrept ft-tertiary fs-6 text-gray-900 dark:text-white text-opacity-60 text-truncate-2 my-1">{{article.content|safe|truncatewords:"25"}}</p>
                                                         <div class="post-link">
                                                             <a href="{% url 'news_details' article.slug %}" class="link fs-7 fw-bold text-uppercase text-none mt-1 pb-narrow p-0 border-bottom dark:text-white">
                                                                 <span>Read more</span>
