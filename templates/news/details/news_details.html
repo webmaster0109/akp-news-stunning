@@ -7,7 +7,7 @@
 {% block og_tags %}
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{article.title}} - Aaj Ka Prahari">
-    <meta property="og:description" content="{{article.content|safe}} | Aaj Ka Prahari">
+    <meta property="og:description" content="{{article.content|safe|slice:"150"}} | Aaj Ka Prahari">
     <meta property="og:url" content="">
     <meta property="og:site_name" content="हिंदी समाचार मुखपृष्ठ - Aaj Ka Prahari">
     <meta property="og:image" content="{{article.featured_image.url}}">
@@ -20,7 +20,7 @@
 {% block twitter_tags %}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{article.title}} | Aaj Ka Prahari">
-    <meta name="twitter:description" content="{{article.content|safe}}">
+    <meta name="twitter:description" content="{{article.content|safe|slice:"150"}}">
     <meta name="twitter:image" content="{{article.featured_image.url}}">
 {% endblock %}
 
