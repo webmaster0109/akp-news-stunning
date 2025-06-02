@@ -19,6 +19,7 @@
                                         <div>
                                             {% for article in articles|slice:":1" %}
                                             {% if article.category.name == "राजनीति" %}
+                                            {% if article.is_featured == True %}
                                             <article class="post type-post panel uc-transition-toggle vstack gap-2 lg:gap-3 h-100 overflow-hidden uc-dark">
                                                 <div class="post-media panel overflow-hidden h-100">
                                                     <div class="featured-image bg-gray-25 dark:bg-gray-800 h-100 d-none md:d-block">
@@ -56,6 +57,7 @@
                                                     </div>
                                                 </div>
                                             </article>
+                                            {% endif %}
                                             {% else %}
                                             No News
                                             {% endif %}
@@ -65,7 +67,7 @@
                                     </div>
                                     <div class="order-1 md:order-0">
                                         <div class="row child-cols-12 g-2 lg:g-4 sep-x" data-uc-grid>
-                                            {% for article in articles|slice:"2:5" %}
+                                            {% for article in articles|slice:"1:4" %}
                                             {% if article.category.name == "राजनीति" %}
                                             <div>
                                                 <article class="post type-post panel uc-transition-toggle">
