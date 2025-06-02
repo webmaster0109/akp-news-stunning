@@ -228,3 +228,14 @@ class LiveUpdates(BaseModel):
 
     def __str__(self):
         return self.title
+
+class SocialAccount(models.Model):
+    facebook = models.URLField(null=True, blank=True)
+    twitter = models.URLField(null=True, blank=True)
+    instagram = models.URLField(null=True, blank=True)
+    youtube = models.URLField(null=True, blank=True)
+    class Meta:
+        verbose_name_plural = "Social Accounts"
+
+    def __str__(self):
+        return f"Social Accounts"
