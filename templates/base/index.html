@@ -160,6 +160,62 @@
         {% include "base/includes/footer.html" %}
 
         <!-- Footer end -->
+         
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const searchInput = document.getElementById('live-search-input');
+                const resultsContainer = document.getElementById('live-search-results-container');
+                let debounceTimer;
+
+                const debounce = (callback, time) => {
+                    return function(...args) {
+                        clearTimeout(debounceTimer);
+                        debounceTimer = setTimeout(() => {
+                            callback.apply(this, args);
+                        }, time);
+                    };
+                };
+
+                const fetchLiveResults = async () => {
+                    const query = searchInput.value.trim();
+
+                    if (query.length < 1) {
+                        resultsContainer.innerHTML = '';
+                        return;
+                    }
+
+                    resultsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400">Searching...</p>';
+
+                    try {
+                        const response = await fetch(`/api/live-search/?q=${encodeURIComponent(query)}`);
+                        const data = await response.json();
+
+                        if (data.results && data.results.length > 0) {
+                            let resultsHtml = '<ul class="list-group list-group-flush">';
+                            data.results.forEach(item => {
+                                console.log(item.url);
+                                resultsHtml += `
+                                    <li class="list-group-item">
+                                        <a href="${item.url}" class="text-decoration-none">
+                                            <h6 class="mb-1">${item.title}</h6>
+                                        </a>
+                                    </li>
+                                `;
+                            });
+                            resultsHtml += '</ul>';
+                            resultsContainer.innerHTML = resultsHtml;
+                        } else {
+                            resultsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400">No results found.</p>';
+                        }
+                    } catch {
+                        console.error('Live search failed:', error);
+                        resultsContainer.innerHTML = '<p class="text-danger">Search is currently unavailable.</p>';
+                    }
+                };
+
+                searchInput.addEventListener('input', debounce(fetchLiveResults, 300));
+            })
+        </script>
 
         <!-- include jquery & bootstrap js -->
         <script defer src="/media/js/libs/jquery.min.js"></script>
@@ -181,6 +237,8 @@
         <script src="/media/js/utils/register.js"></script>
         <script src="/media/js/utils/logout.js"></script>
         <script src="/media/js/utils/toastBox.js"></script>
+
+        
 
         <script>
             // Schema toggle via URL

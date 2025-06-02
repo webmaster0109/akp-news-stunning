@@ -12,8 +12,8 @@
         </header>
 
         <div class="panel">
-            <form id="search-panel" class="form-icon-group vstack gap-1 mb-3" data-uc-sticky="">
-                <input type="email" class="form-control form-control-md fs-6" placeholder="Search..">
+            <form class="form-icon-group vstack gap-1 mb-3" data-uc-sticky="" action="{% url 'search_results' %}" method="GET" id="full-search-form">
+                <input type="text" class="form-control form-control-md fs-6" placeholder="Search for news.." id="live-search-input" name="q">
                 <span class="form-icon text-gray">
                     <i class="unicon-search icon-1"></i>
                 </span>
