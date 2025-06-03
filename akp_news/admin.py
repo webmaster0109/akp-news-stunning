@@ -16,6 +16,7 @@ limited_admin_site.register(NewsTagBanner)
 limited_admin_site.register(NewsHomeBanner)
 limited_admin_site.register(LiveUpdates)
 limited_admin_site.register(Advertisement)
+limited_admin_site.register(SocialAccount)
 
 
 class NewsCategoryAdmin(admin.ModelAdmin):

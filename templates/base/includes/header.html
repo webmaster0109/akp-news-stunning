@@ -66,18 +66,20 @@
                                                 </form>
                                                 <p class="fs-7 mt-1">Do not worry, we don't spam!</p>
                                                 <ul class="nav-x gap-2 mt-3">
+                                                    {% for social in social_accounts %}
                                                     <li>
-                                                        <a href="#fb"><i class="icon icon-2 unicon-logo-facebook"></i></a>
+                                                        <a href="{% if social.facebook %}{{social.facebook}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-facebook"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a href="#x"><i class="icon icon-2 unicon-logo-x-filled"></i></a>
+                                                        <a href="{% if social.twitter %}{{social.twitter}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-x-filled"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a href="#in"><i class="icon icon-2 unicon-logo-instagram"></i></a>
+                                                        <a href="{% if social.instagram %}{{social.instagram}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-instagram"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a href="#yt"><i class="icon icon-2 unicon-logo-youtube"></i></a>
+                                                        <a href="{% if social.youtube %}{{social.youtube}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-youtube"></i></a>
                                                     </li>
+                                                    {% endfor %}
                                                 </ul>
                                             </div>
                                         </div>

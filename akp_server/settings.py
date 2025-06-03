@@ -71,6 +71,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "Base.utils.get_categories",
+                "Base.utils.social_accounts_context",
             ],
         },
     },

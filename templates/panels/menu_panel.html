@@ -44,10 +44,12 @@
             </ul>
             <ul class="social-icons nav-x mt-4">
                 <li>
-                    <a href="index.html#"><i class="unicon-logo-medium icon-2"></i></a>
-                    <a href="index.html#"><i class="unicon-logo-x-filled icon-2"></i></a>
-                    <a href="index.html#"><i class="unicon-logo-instagram icon-2"></i></a>
-                    <a href="index.html#"><i class="unicon-logo-pinterest icon-2"></i></a>
+                    {% for social in social_accounts %}
+                            <a href="{% if social.facebook %}{{social.facebook}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-facebook"></i></a>
+                            <a href="{% if social.twitter %}{{social.twitter}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-x-filled"></i></a>
+                            <a href="{% if social.instagram %}{{social.instagram}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-instagram"></i></a>
+                            <a href="{% if social.youtube %}{{social.youtube}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-youtube"></i></a>
+                    {% endfor %}
                 </li>
             </ul>
             <div class="py-2 hstack gap-2 mt-4 bg-white dark:bg-gray-900" data-uc-sticky="position: bottom">

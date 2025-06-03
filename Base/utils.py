@@ -6,7 +6,7 @@ def get_categories(request):
         'categories': NewsCategory.objects.all()
     }
 
-def social_accounts(request):
+def social_accounts_context(request):
     return {
         'social_accounts': SocialAccount.objects.all()
     }

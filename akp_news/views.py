@@ -199,7 +199,7 @@ def add_comment_view(request):
 def category_details(request, slug):
     category = get_object_or_404(NewsCategory, slug=slug)
 
-    epapers = Epaper.objects.all()
+    epapers = Epaper.objects.filter(is_active=True).order_by('-timestamp')
 
     context = {
         'category': category,

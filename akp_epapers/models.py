@@ -8,9 +8,11 @@ from akp_news.base import BaseModel
 class Epaper(HomeBaseModel):
     file = models.FileField(upload_to='epapers/')
     is_active = models.BooleanField(default=True)
+    timestamp = models.DateField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "E-Papers"
+        ordering = ['-timestamp']
     
     def __str__(self):
         return self.meta_title
