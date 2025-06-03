@@ -11,7 +11,7 @@
                                 </div>
                                 <div class="block-content">
                                     <div class="row child-cols-12 g-2 lg:g-4 sep-x">
-                                        {% for article in articles %}
+                                        {% for article in articles|slice:":10" %}
                                         <div>
                                             <article class="post type-post panel uc-transition-toggle">
                                                 <div class="row child-cols g-2 lg:g-3" data-uc-grid>

@@ -9,7 +9,7 @@ from .models import Epaper, EpaperDownload
 def download_epaper_view(request, epaper_id):
     epaper = get_object_or_404(Epaper, id=epaper_id)
 
-    DOWNLOAD_LIMIT = 5
+    DOWNLOAD_LIMIT = 365
 
     if request.user.epaper_downloads >= DOWNLOAD_LIMIT:
         return JsonResponse({'status': 'error', 'message': 'You have reached the download limit for this epaper.'}, status=400)
