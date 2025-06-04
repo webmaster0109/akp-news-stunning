@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.urls import reverse
+import uuid
+from django_ckeditor_5.fields import CKEditor5Field
 
 class CustomUser(AbstractUser):
     is_staff = models.BooleanField(default=False)
@@ -49,3 +52,46 @@ class AdminLoginAttempt(models.Model):
         verbose_name = "Admin Login Attempt"
         verbose_name_plural = "Admin Login Attempts"
         ordering = ['-timestamp']
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True, max_length=255)
+    is_active = models.BooleanField(default=True, help_text="Set to False to unsubscribe.")
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+    unsubscribed_at = models.DateTimeField(null=True, blank=True)
+
+    unsubscribe_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    def __str__(self):
+        return self.email
+    
+    class Meta:
+        verbose_name = "Newsletter Subscriber"
+        verbose_name_plural = "Newsletter Subscribers"
+        ordering = ['-subscribed_at']
+    
+    def get_unsubscribe_url(self):
+        return reverse('unsubscribe_newsletter', kwargs={'token': str(self.unsubscribe_token)})
+
+class NewsletterIssue(models.Model):
+    subject = models.CharField(max_length=255)
+    content_html = CKEditor5Field(config_name='extends', null=True, blank=True, help_text="The HTML content of the newsletter.")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    sent_at = models.DateTimeField(null=True, blank=True, help_text="Timestamp when this newsletter was sent.")
+    is_sent = models.BooleanField(default=False, help_text="Set to True when the newsletter is sent.")
+
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to={'is_staff': True}
+    )
+
+    def __str__(self):
+        return self.subject
+    
+    class Meta:
+        verbose_name = "Newsletter Issue"
+        verbose_name_plural = "Newsletter Issues"
+        ordering = ['-created_at']
