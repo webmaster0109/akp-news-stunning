@@ -54,7 +54,7 @@ class LimitedConcurrentSessionAdminAuthenticationForm(AuthenticationForm):
                 if str(session_data.get('_auth_user_id')) == str(user.pk):
                     active_session_count += 1
             
-            max_sessions = getattr(settings, 'MAX_CONCURRENT_ADMIN_SESSIONS', 5)
+            max_sessions = getattr(settings, 'MAX_CONCURRENT_ADMIN_SESSIONS', 10)
 
             if active_session_count > max_sessions:
                 failure_msg = ("Login limit reached for this admin account. "
