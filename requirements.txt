@@ -4,5 +4,4 @@ django-admin-interface
 Pillow
 gunicorn
 whitenoise
-python-dotenv 
 psycopg2
