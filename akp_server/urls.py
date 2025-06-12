@@ -9,7 +9,7 @@ from akp_epapers.views import download_epaper_view
 from akp_accounts.admin import limited_admin_site
 
 urlpatterns = [
-    # path("private-admin/", admin.site.urls, name="admin_login"),
+    path("super-private-admin/", admin.site.urls, name="admin_login"),
     path("private-admin/", limited_admin_site.urls, name="admin_login"),
     path("", include("akp_news.urls")),
     path("account/", include("akp_accounts.urls")),

@@ -14,22 +14,6 @@ class NewsTagBanner(BaseModel):
 
     def __str__(self):
         return self.tag_name
-    
-
-class Advertisement(BaseModel):
-    BANNER_SIZES = (
-        ('Home Banner 640x926', 'Home Banner 640x926'),
-        ('Home Banner 2496x300', 'Home Banner 2496x300'),
-        ('News Article Banner 600x700', 'News Article Banner 600x700'),
-    )
-    banner_title = models.CharField(max_length=100, null=True, blank=True)
-    banner_link = models.URLField(null=True, blank=True)
-    banner_image = models.ImageField(upload_to='banner_images/', null=True, blank=True)
-    banner_size = models.CharField(max_length=50, null=True, blank=True, choices=BANNER_SIZES)
-    is_active = models.BooleanField(default=True)
-    
-    def __str__(self):
-        return self.banner_title
 
 class NewsCategory(BaseModel):
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -239,3 +223,19 @@ class SocialAccount(models.Model):
 
     def __str__(self):
         return f"Social Accounts"
+
+
+class Advertisements(BaseModel):
+    BANNER_SIZES = (
+        ('Home Banner 640x926', 'Home Banner 640x926'),
+        ('Home Banner 2496x300', 'Home Banner 2496x300'),
+        ('News Article Banner 600x700', 'News Article Banner 600x700'),
+    )
+    banner_title = models.CharField(max_length=100, null=True, blank=True)
+    banner_link = models.URLField(null=True, blank=True)
+    banner_image = models.ImageField(upload_to='banner_images/', null=True, blank=True)
+    banner_size = models.CharField(max_length=50, null=True, blank=True, choices=BANNER_SIZES)
+    is_active = models.BooleanField(default=True, null=True, blank=True)
+    
+    def __str__(self):
+        return self.banner_title

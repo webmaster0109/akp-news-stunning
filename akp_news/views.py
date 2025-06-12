@@ -21,7 +21,7 @@ def index_akp_news(request):
 
     live_updates = LiveUpdates.objects.all().order_by('-created_at').filter(is_active=True)
 
-    active_ads = Advertisement.objects.filter(is_active=True)
+    active_ads = Advertisements.objects.filter(is_active=True)
     random_ads = active_ads.order_by('?') if active_ads.exists() else None
 
     context = {

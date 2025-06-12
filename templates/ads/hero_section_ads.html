@@ -1,3 +1,4 @@
+{% if random_ads %}
 {% for ad in random_ads|slice:":1" %}
 {% if ad.banner_size == 'Home Banner 640x926' %}
 <div class="panel cstack gap-2 h-100">
@@ -17,3 +18,4 @@
 </div>
 {% endif %}
 {% endfor %}
+{% endif %}
