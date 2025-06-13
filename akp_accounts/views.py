@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from .models import CustomUser
+from .models import CustomUser, NewsletterSubscriber
 
 
 # Create your views here.
@@ -65,3 +65,17 @@ def register_attempt(request):
         return JsonResponse({'status': 'success', 'message': 'User created successfully'}, status=200)
 
     return render(request, template_name="register.html")
+
+
+def newsletter_subscribers(request):
+    if request.method == "POST":
+        email = request.POST.get('subscriber_email')
+
+        if not email:
+            return JsonResponse({'status': 'error', 'message': 'Email is required'}, status=401)
+        
+        if NewsletterSubscriber.objects.filter(email=email).exists():
+            return JsonResponse({'status': 'error', 'message': 'Email already subscribed'}, status=400)
+        
+        NewsletterSubscriber.objects.create(email=email)
+        return JsonResponse({'status': 'success', 'message': 'Subscribed successfully'}, status=200)

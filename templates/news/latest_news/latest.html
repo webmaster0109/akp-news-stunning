@@ -100,24 +100,28 @@
                                 <div class="widgt-title">
                                     <h4 class="fs-7 ft-tertiary text-uppercase m-0">Follow @News5</h4>
                                 </div>
+                                    <p style="display: none; font-size: 12px;" class="subscriber-message" id="message-2"></p>
                                 <div class="widgt-content">
-                                    <form class="vstack gap-1">
-                                        <input class="form-control form-control-sm fs-6 fw-medium h-40px w-full bg-white dark:bg-gray-800 dark:bg-gray-800 dark:border-white dark:border-opacity-15 dark:border-opacity-15" type="email" placeholder="Your email" required="">
+                                    <form data-message-target="message-2" class="vstack gap-1 subscriber-form" method="POST" action="{% url "newsletter_subscribers" %}">
+                                        {% csrf_token %}
+                                        <input class="form-control form-control-sm fs-6 fw-medium h-40px w-full bg-white dark:bg-gray-800 dark:bg-gray-800 dark:border-white dark:border-opacity-15 dark:border-opacity-15" type="email" placeholder="Your email" required name="subscriber_email">
                                         <button class="btn btn-sm btn-primary" type="submit">Sign up</button>
                                     </form>
                                     <ul class="nav-x justify-center gap-1 mt-3">
+                                        {% for social in social_accounts %}
                                         <li>
-                                            <a href="index.html#fb" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-facebook"></i></a>
+                                            <a href="{% if social.facebook %}{{social.facebook}}{% else %}javascript:void(0);{% endif %}" target="_blank" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-facebook"></i></a>
                                         </li>
                                         <li>
-                                            <a href="index.html#x" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-x-filled"></i></a>
+                                            <a href="{% if social.twitter %}{{social.twitter}}{% else %}javascript:void(0);{% endif %}" target="_blank" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-x-filled"></i></a>
                                         </li>
                                         <li>
-                                            <a href="index.html#in" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-instagram"></i></a>
+                                            <a href="{% if social.instagram %}{{social.instagram}}{% else %}javascript:void(0);{% endif %}" target="_blank" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-instagram"></i></a>
                                         </li>
                                         <li>
-                                            <a href="index.html#yt" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-youtube"></i></a>
+                                            <a href="{% if social.youtube %}{{social.youtube}}{% else %}javascript:void(0);{% endif %}" target="_blank" class="cstack w-32px h-32px border rounded-circle hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-150"><i class="icon icon-1 unicon-logo-youtube"></i></a>
                                         </li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div>
