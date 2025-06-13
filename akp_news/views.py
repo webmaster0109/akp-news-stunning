@@ -37,7 +37,7 @@ def index_akp_news(request):
 
 def news_details(request, slug):
     article = get_object_or_404(News, slug=slug, is_published=True)
-    active_ads = Advertisement.objects.filter(is_active=True)
+    active_ads = Advertisements.objects.filter(is_active=True)
     random_ads = active_ads.order_by('?') if active_ads.exists() else []
 
     comments = get_nested_comments(article.id)
