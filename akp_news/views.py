@@ -12,6 +12,11 @@ from .search import perform_search
 # Create your views here.
 
 
+def handler404(request, exception=None):
+    response = render(request, template_name='errors/404.html')
+    response.status_code = 404
+    return response
+
 def index_akp_news(request):
 
     news_tags = NewsTagBanner.objects.all()
