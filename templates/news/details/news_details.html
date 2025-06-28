@@ -106,7 +106,7 @@
                     <div class="max-w-lg">
                         <div class="post-content panel fs-6 md:fs-5">
                             {% comment %} data-uc-lightbox="animation: scale" {% endcomment %}
-                            <span class="text-black dark:text-white" style="text-align:justify;">{{article.content|safe}}</span>
+                            <span class="post-content-section text-black dark:text-white" style="text-align:justify;">{{article.content|safe}}</span>
                         </div>
                         <div class="post-footer panel vstack sm:hstack gap-3 justify-between justifybetween border-top py-4 mt-4 xl:py-9 xl:mt-9">
                             <ul class="nav-x gap-narrow text-primary">
@@ -195,6 +195,19 @@
         alert('Failed to copy URL to clipboard');
       }
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const articleBody = document.querySelector('.post-content-section');
+        if (articleBody) {
+            const links = articleBody.getElementsByTagName('a');
+            for (let i = 0; i < links.length; i++) {
+                links[i].setAttribute('target', '_blank');
+                links[i].setAttribute('rel', 'noopener noreferrer');
+            }
+        }
+    });
 </script>
 
 <script id="comments-data" type="application/json">
