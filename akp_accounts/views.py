@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from .models import CustomUser, NewsletterSubscriber
-
-
+import random
+import uuid
+from .utils import send_verification_mail, send_registration_email
 # Create your views here.
 
 
@@ -53,19 +54,65 @@ def register_attempt(request):
         if CustomUser.objects.filter(email=email).exists():
             return JsonResponse({'status': 'error', 'message': 'Email already exists'}, status=400)
         
+        otp = random.randint(100000, 999999)
+    
         user_obj = CustomUser.objects.create(
             first_name=first_name,
             last_name=last_name,
             username=str(email).split('@')[0], 
-            email=email
+            email=email,
+            verification_otp=otp,
+            verification_token=str(uuid.uuid4())
         )
         user_obj.set_password(password)
         user_obj.save()
-        login(request, user_obj)
-        return JsonResponse({'status': 'success', 'message': 'User created successfully'}, status=200)
+
+        send_verification_mail(request, email, user_obj.verification_token, user_obj.verification_otp)
+
+        return JsonResponse({'status': 'success', 'message': 'Verification code has been sent to mail. Please check your mail.'}, status=200)
 
     return render(request, template_name="register.html")
 
+def verify_account(request, token):
+
+    try:
+        user_obj = CustomUser.objects.get(verification_token=token)
+        if request.user.is_authenticated:
+            return redirect('/')
+        if user_obj.is_user_active:
+            return JsonResponse({'status': 'error', 'message': 'Your account is already verified.'}, status=400)
+
+        if request.method == "POST":
+            otp = request.POST.get("otp")
+            if len(otp) != 6:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': f"You've entered {len(otp)}-digit OTP. Please enter a valid 6-digit OTP."
+                }, status=400)
+            if int(otp) != user_obj.verification_otp:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'You have entered incorrect OTP'
+                }, status=400)
+            else:
+                user_obj.is_user_active=True
+                user_obj.verification_otp=None
+                user_obj.save()
+                send_registration_email(user_obj)
+                login(request, user_obj)
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'You have been successfully registered'
+                }, status=200)
+        
+        context = {
+            'user_obj': user_obj
+        }
+
+    except Exception as e:
+        print(e)
+    
+    return render(request, template_name="account/verify_account.html", context=context)
 
 def newsletter_subscribers(request):
     if request.method == "POST":

@@ -1,0 +1,33 @@
+{% extends "base/index.html" %}
+{% block content %}
+
+<style>
+  .verify_container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .verify-account-akp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="verify_container">
+    <h1 style="color: #000;">Verify your account using OTP</h1>
+    <h2 style="color: #000; font-size: 22px; font-weight: 500;">Enter OTP</h2>
+    <form class="verify-account-akp py-3" action="{% url 'verify_account' user_obj.verification_token %}" method="post">
+      {% csrf_token %}
+      <p class="verify-account-message my-3" style="display: none;"></p>
+      <input class="form-control h-40px bg-white ark:bg-gray-800 dark:bg-gray-800 dark:border-white dark:border-opacity-15 dark:border-opacity-15" type="text" name="otp" placeholder="Enter otp">
+      <button class="btn btn-danger h-40px btn-sm lg:mt-1" type="submit">Verify Account</button>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

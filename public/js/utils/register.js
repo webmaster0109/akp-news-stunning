@@ -23,9 +23,9 @@ const registerForm = document.querySelector('.register-form');
         if (response.ok) {
             registerMessage.style.display = 'block';
             registerMessage.textContent = result.message;
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 2000);
         } else if (response.status === 400) {
             registerMessage.style.display = 'block';
             registerMessage.textContent = result.message;

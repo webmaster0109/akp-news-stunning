@@ -13,6 +13,10 @@ class CustomUser(AbstractUser):
     profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
 
+    verification_token = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    verification_otp = models.PositiveIntegerField(null=True, blank=True)
+    is_user_active = models.BooleanField(default=False)
+
     epaper_downloads = models.PositiveIntegerField(default=0, help_text="Number of E-Paper downloads")
 
     def __str__(self):

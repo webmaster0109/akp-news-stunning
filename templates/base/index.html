@@ -1,273 +1,352 @@
 <!DOCTYPE html>
 <html lang="hi" dir="ltr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}हिंदी समाचार मुखपृष्ठ{% endblock %} | Aaj Ka Prahari</title>
-        <meta name="description" content="{% block desc %}हिंदी समाचार मुखपृष्ठ | Aaj Ka Prahari{% endblock %}">
-        <meta name="keywords" content="{% block keywords %}Aaj Ka Prahari, akp, news, hindi news, hindi news website, hindi news portal, hindi news site, akp news{% endblock %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}हिंदी समाचार मुखपृष्ठ{% endblock %} | Aaj Ka Prahari
+    </title>
+    <meta
+      name="description"
+      content="{% block desc %}हिंदी समाचार मुखपृष्ठ | Aaj Ka Prahari{% endblock %}"
+    />
+    <meta
+      name="keywords"
+      content="{% block keywords %}Aaj Ka Prahari, akp, news, hindi news, hindi news website, hindi news portal, hindi news site, akp news{% endblock %}"
+    />
 
-        <meta name="google-site-verification" content="CMD5OSDXZEThJWcRjt5cXfZoGwSsRMmFj0C_CaN0AXg">
+    <meta
+      name="google-site-verification"
+      content="CMD5OSDXZEThJWcRjt5cXfZoGwSsRMmFj0C_CaN0AXg"
+    />
 
-        <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-DCRBKQG1X4"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-DCRBKQG1X4'); </script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-DCRBKQG1X4"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-DCRBKQG1X4");
+    </script>
 
-        <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-W84QNSFH');</script>
-        <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-W84QNSFH");
+    </script>
+    <!-- End Google Tag Manager -->
 
-        <meta name="theme-color" content="#2757fd">
+    <meta name="theme-color" content="#2757fd" />
 
-        <!-- Open Graph Tags -->
-        <meta property="og:locale" content="en_US">
-        {% block og_tags %}
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="हिंदी समाचार मुखपृष्ठ - Aaj Ka Prahari">
-        <meta property="og:description" content="हिंदी समाचार मुखपृष्ठ | Aaj Ka Prahari">
-        <meta property="og:url" content="">
-        <meta property="og:site_name" content="हिंदी समाचार मुखपृष्ठ - Aaj Ka Prahari">
-        <meta property="og:image" content="/media/images/logo/akp_logo_new.jpg">
-        <meta property="og:image:width" content="1180">
-        <meta property="og:image:height" content="600">
-        <meta property="og:image:type" content="image/png">
-        {% endblock %}
+    <!-- Open Graph Tags -->
+    <meta property="og:locale" content="en_US" />
+    {% block og_tags %}
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="हिंदी समाचार मुखपृष्ठ - Aaj Ka Prahari"
+    />
+    <meta
+      property="og:description"
+      content="हिंदी समाचार मुखपृष्ठ | Aaj Ka Prahari"
+    />
+    <meta property="og:url" content="" />
+    <meta
+      property="og:site_name"
+      content="हिंदी समाचार मुखपृष्ठ - Aaj Ka Prahari"
+    />
+    <meta property="og:image" content="/media/images/logo/akp_logo_new.jpg" />
+    <meta property="og:image:width" content="1180" />
+    <meta property="og:image:height" content="600" />
+    <meta property="og:image:type" content="image/png" />
+    {% endblock %}
 
-        <!-- Twitter Card Tags -->
-        {% block twitter_tags %}
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="हिंदी समाचार मुखपृष्ठ | Aaj Ka Prahari">
-        <meta name="twitter:description" content="Aaj Ka Prahari, akp, news, hindi news, hindi news website, hindi news portal, hindi news site, akp news.">
-        <meta name="twitter:image" content="/media/images/logo/akp_logo_new.jpg">
-        {% endblock %}
+    <!-- Twitter Card Tags -->
+    {% block twitter_tags %}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="हिंदी समाचार मुखपृष्ठ | Aaj Ka Prahari"
+    />
+    <meta
+      name="twitter:description"
+      content="Aaj Ka Prahari, akp, news, hindi news, hindi news website, hindi news portal, hindi news site, akp news."
+    />
+    <meta name="twitter:image" content="/media/images/logo/akp_logo_new.jpg" />
+    {% endblock %}
 
-        <link rel="canonical" href="">
+    <link rel="canonical" href="" />
 
-        <link rel="shortcut icon" href="/media/images/logo/akp_logo_new.jpg" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="/media/images/logo/akp_logo_new.jpg"
+      type="image/x-icon"
+    />
 
-        <!-- preload head styles -->
-        <link rel="preload" href="/media/css/unicons.min.css" as="style">
-        <link rel="preload" href="/media/css/swiper-bundle.min.css" as="style">
+    <!-- preload head styles -->
+    <link rel="preload" href="/media/css/unicons.min.css" as="style" />
+    <link rel="preload" href="/media/css/swiper-bundle.min.css" as="style" />
 
-        <!-- preload footer scripts -->
-        <link rel="preload" href="/media/js/libs/jquery.min.js" as="script">
-        <link rel="preload" href="/media/js/libs/scrollmagic.min.js" as="script">
-        <link rel="preload" href="/media/js/libs/swiper-bundle.min.js" as="script">
-        <link rel="preload" href="/media/js/libs/anime.min.js" as="script">
-        <link rel="preload" href="/media/js/helpers/data-attr-helper.js" as="script">
-        <link rel="preload" href="/media/js/helpers/swiper-helper.js" as="script">
-        <link rel="preload" href="/media/js/helpers/anime-helper.js" as="script">
-        <link rel="preload" href="/media/js/helpers/anime-helper-defined-timelines.js" as="script">
-        <link rel="preload" href="/media/js/uikit-components-bs.js" as="script">
-        <link rel="preload" href="/media/js/app.js" as="script">
+    <!-- preload footer scripts -->
+    <link rel="preload" href="/media/js/libs/jquery.min.js" as="script" />
+    <link rel="preload" href="/media/js/libs/scrollmagic.min.js" as="script" />
+    <link
+      rel="preload"
+      href="/media/js/libs/swiper-bundle.min.js"
+      as="script"
+    />
+    <link rel="preload" href="/media/js/libs/anime.min.js" as="script" />
+    <link
+      rel="preload"
+      href="/media/js/helpers/data-attr-helper.js"
+      as="script"
+    />
+    <link rel="preload" href="/media/js/helpers/swiper-helper.js" as="script" />
+    <link rel="preload" href="/media/js/helpers/anime-helper.js" as="script" />
+    <link
+      rel="preload"
+      href="/media/js/helpers/anime-helper-defined-timelines.js"
+      as="script"
+    />
+    <link rel="preload" href="/media/js/uikit-components-bs.js" as="script" />
+    <link rel="preload" href="/media/js/app.js" as="script" />
 
-        <!-- app head for bootstrap core -->
-        <script src="/media/js/app-head-bs.js"></script>
+    <!-- app head for bootstrap core -->
+    <script src="/media/js/app-head-bs.js"></script>
 
-        <!-- include uni-core components -->
-        <link rel="stylesheet" href="/media/js/uni-core/css/uni-core.min.css">
+    <!-- include uni-core components -->
+    <link rel="stylesheet" href="/media/js/uni-core/css/uni-core.min.css" />
 
-        <!-- include styles -->
-        <link rel="stylesheet" href="/media/css/unicons.min.css">
-        <link rel="stylesheet" href="/media/css/prettify.min.css">
-        <link rel="stylesheet" href="/media/css/swiper-bundle.min.css">
+    <!-- include styles -->
+    <link rel="stylesheet" href="/media/css/unicons.min.css" />
+    <link rel="stylesheet" href="/media/css/prettify.min.css" />
+    <link rel="stylesheet" href="/media/css/swiper-bundle.min.css" />
 
-        <!-- include main style -->
-        <link rel="stylesheet" href="/media/css/theme/demo-seven.min.css">
-        {% comment %} <link rel="stylesheet" href="/media/css/theme/demo-two.min.css"> {% endcomment %}
+    <!-- include main style -->
+    <link rel="stylesheet" href="/media/css/theme/demo-seven.min.css" />
+    {% comment %}
+    <link rel="stylesheet" href="/media/css/theme/demo-two.min.css" />
+    {% endcomment %}
 
-        <link rel="stylesheet" href="/media/css/utils/toastBox.css">
+    <link rel="stylesheet" href="/media/css/utils/toastBox.css" />
 
-        <!-- include scripts -->
-        <script src="/media/js/uni-core/js/uni-core-bundle.min.js"></script>
-    </head>
-    <body class="uni-body panel bg-white text-gray-900 dark:bg-black dark:text-white text-opacity-50 overflow-x-hidden">
+    <!-- include scripts -->
+    <script src="/media/js/uni-core/js/uni-core-bundle.min.js"></script>
+  </head>
+  <body
+    class="uni-body panel bg-white text-gray-900 dark:bg-black dark:text-white text-opacity-50 overflow-x-hidden"
+  >
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-W84QNSFH"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W84QNSFH"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
+    <!--  Search modal -->
+    {% include 'modals/search_modal.html' %}
 
-        <!--  Search modal -->
-        {% include 'modals/search_modal.html' %}
+    <!--  Menu panel -->
+    {% include 'panels/menu_panel.html' %}
 
-        <!--  Menu panel -->
-        {% include 'panels/menu_panel.html' %}
+    <!--  Cart panel -->
+    {% include 'panels/cart_panel.html' %}
 
-        <!--  Cart panel -->
-        {% include 'panels/cart_panel.html' %}
+    <!--  Favorites modal -->
+    {% include 'modals/fav_modal.html' %}
 
-        <!--  Favorites modal -->
-        {% include 'modals/fav_modal.html' %}
+    <!--  Newsletter modal -->
+    {% comment %} {% include 'modals/newsletter_modal.html' %} {% endcomment %}
 
-        <!--  Newsletter modal -->
-        {% comment %} {% include 'modals/newsletter_modal.html' %} {% endcomment %}
+    <!--  Account modal -->
+    {% include 'modals/account_modal.html' %}
 
-        <!--  Account modal -->
-        {% include 'modals/account_modal.html' %}
+    <!--  GDPR modal -->
+    {% include 'modals/gdpr_modal.html' %}
 
-        <!--  GDPR modal -->
-        {% include 'modals/gdpr_modal.html' %}
+    <!--  Bottom Actions Sticky -->
+    {% include 'actions/bottom_actions.html' %}
 
-        <!--  Bottom Actions Sticky -->
-        {% include 'actions/bottom_actions.html' %}
+    <!-- Header start -->
+    {% include 'base/includes/header.html' %}
 
-        <!-- Header start -->
-        {% include 'base/includes/header.html' %}
+    <!-- Header end -->
 
-        <!-- Header end -->
+    <!-- Wrapper start -->
+    <div id="wrapper" class="wrap overflow-hidden-x">
+      {% block content %}
 
-        <!-- Wrapper start -->
-        <div id="wrapper" class="wrap overflow-hidden-x">
-            {% block content %}
+      <!-- Section start -->
+      {% include 'news/hero_section/hero_slider.html' %}
 
-            <!-- Section start -->
-            {% include 'news/hero_section/hero_slider.html' %}
+      <!-- Section end -->
 
-            <!-- Section end -->
+      <!-- Section start -->
 
-            <!-- Section start -->
+      {% include 'news/hero_section/hero.html' %}
 
-            {% include 'news/hero_section/hero.html' %}
+      <!-- Section end -->
 
-            <!-- Section end -->
+      <!-- Section start -->
+      {% include 'news/middle/middle_first.html' %}
 
-            <!-- Section start -->
-            {% include 'news/middle/middle_first.html' %}
+      <!-- Section end -->
 
-            <!-- Section end -->
+      <!-- Section start -->
+      {% comment %} {% include 'news/middle/middle_second.html' %} {% endcomment
+      %}
+      <!-- Section end -->
 
-            <!-- Section start -->
-            {% comment %} {% include 'news/middle/middle_second.html' %} {% endcomment %}
-            <!-- Section end -->
+      {% comment %} Ads Start {% endcomment %} {% include
+      'ads/middle_homepage_ads.html' %} {% comment %} Ads End {% endcomment %}
 
-            {% comment %} Ads Start {% endcomment %}
-            {% include 'ads/middle_homepage_ads.html' %}
-            {% comment %} Ads End {% endcomment %}
+      <!-- Section start -->
+      {% include 'news/middle/middle_third.html' %}
 
-            <!-- Section start -->
-            {% include 'news/middle/middle_third.html' %}
+      <!-- Section end -->
 
-            <!-- Section end -->
+      <!-- Section start -->
+      {% include 'news/middle/middle_fourth.html' %}
 
-            <!-- Section start -->
-            {% include 'news/middle/middle_fourth.html' %}
+      <!-- Section end -->
 
-            <!-- Section end -->
+      <!-- Section start -->
+      {% comment %} {% include 'news/live_news/live.html' %} {% endcomment %}
 
-            <!-- Section start -->
-            {% comment %} {% include 'news/live_news/live.html' %} {% endcomment %}
+      <!-- Section end -->
 
-            <!-- Section end -->
+      <!-- Section start -->
+      {% include 'news/latest_news/latest.html' %}
 
-            <!-- Section start -->
-            {% include 'news/latest_news/latest.html' %}
+      <!-- Section end -->
+      {% endblock %}
+    </div>
 
-            <!-- Section end -->
-            {% endblock %}
-        </div>
+    <div id="toastBox" aria-live="polite" aria-atomic="true"></div>
 
-        <div id="toastBox" aria-live="polite" aria-atomic="true"></div>
+    <!-- Wrapper end -->
 
-        <!-- Wrapper end -->
+    <!-- Footer start -->
+    {% include "base/includes/footer.html" %}
 
-        <!-- Footer start -->
-        {% include "base/includes/footer.html" %}
+    <!-- Footer end -->
 
-        <!-- Footer end -->
-         
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const searchInput = document.getElementById('live-search-input');
-                const resultsContainer = document.getElementById('live-search-results-container');
-                let debounceTimer;
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("live-search-input");
+        const resultsContainer = document.getElementById(
+          "live-search-results-container"
+        );
+        let debounceTimer;
 
-                const debounce = (callback, time) => {
-                    return function(...args) {
-                        clearTimeout(debounceTimer);
-                        debounceTimer = setTimeout(() => {
-                            callback.apply(this, args);
-                        }, time);
-                    };
-                };
+        const debounce = (callback, time) => {
+          return function (...args) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+              callback.apply(this, args);
+            }, time);
+          };
+        };
 
-                const fetchLiveResults = async () => {
-                    const query = searchInput.value.trim();
+        const fetchLiveResults = async () => {
+          const query = searchInput.value.trim();
 
-                    if (query.length < 1) {
-                        resultsContainer.innerHTML = '';
-                        return;
-                    }
+          if (query.length < 1) {
+            resultsContainer.innerHTML = "";
+            return;
+          }
 
-                    resultsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400">Searching...</p>';
+          resultsContainer.innerHTML =
+            '<p class="text-gray-500 dark:text-gray-400">Searching...</p>';
 
-                    try {
-                        const response = await fetch(`/api/live-search/?q=${encodeURIComponent(query)}`);
-                        const data = await response.json();
+          try {
+            const response = await fetch(
+              `/api/live-search/?q=${encodeURIComponent(query)}`
+            );
+            const data = await response.json();
 
-                        if (data.results && data.results.length > 0) {
-                            let resultsHtml = '<ul class="list-group list-group-flush">';
-                            data.results.forEach(item => {
-                                console.log(item.url);
-                                resultsHtml += `
+            if (data.results && data.results.length > 0) {
+              let resultsHtml = '<ul class="list-group list-group-flush">';
+              data.results.forEach((item) => {
+                console.log(item.url);
+                resultsHtml += `
                                     <li class="list-group-item">
                                         <a href="${item.url}" class="text-decoration-none">
                                             <h6 class="mb-1">${item.title}</h6>
                                         </a>
                                     </li>
                                 `;
-                            });
-                            resultsHtml += '</ul>';
-                            resultsContainer.innerHTML = resultsHtml;
-                        } else {
-                            resultsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400">No results found.</p>';
-                        }
-                    } catch {
-                        console.error('Live search failed:', error);
-                        resultsContainer.innerHTML = '<p class="text-danger">Search is currently unavailable.</p>';
-                    }
-                };
-
-                searchInput.addEventListener('input', debounce(fetchLiveResults, 300));
-            })
-        </script>
-
-        <!-- include jquery & bootstrap js -->
-        <script defer src="/media/js/libs/jquery.min.js"></script>
-        <script defer src="/media/js/libs/bootstrap.min.js"></script>
-
-        <!-- include scripts -->
-        <script defer src="/media/js/libs/anime.min.js"></script>
-        <script defer src="/media/js/libs/swiper-bundle.min.js"></script>
-        <script defer src="/media/js/libs/scrollmagic.min.js"></script>
-        <script defer src="/media/js/helpers/data-attr-helper.js"></script>
-        <script defer src="/media/js/helpers/swiper-helper.js"></script>
-        <script defer src="/media/js/helpers/anime-helper.js"></script>
-        <script defer src="/media/js/helpers/anime-helper-defined-timelines.js"></script>
-        <script defer src="/media/js/uikit-components-bs.js"></script>
-
-        <!-- include app script -->
-        <script defer src="/media/js/app.js"></script>
-        <script src="/media/js/utils/login.js"></script>
-        <script src="/media/js/utils/register.js"></script>
-        <script src="/media/js/utils/logout.js"></script>
-        <script src="/media/js/utils/toastBox.js"></script>
-        <script src="/media/js/utils/newsletterSignup.js"></script>
-
-        
-
-        <script>
-            // Schema toggle via URL
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const getSchema = urlParams.get("schema");
-            if (getSchema === "dark") {
-                setDarkMode(1);
-            } else if (getSchema === "light") {
-                setDarkMode(0);
+              });
+              resultsHtml += "</ul>";
+              resultsContainer.innerHTML = resultsHtml;
+            } else {
+              resultsContainer.innerHTML =
+                '<p class="text-gray-500 dark:text-gray-400">No results found.</p>';
             }
-        </script>
-    </body>
+          } catch {
+            console.error("Live search failed:", error);
+            resultsContainer.innerHTML =
+              '<p class="text-danger">Search is currently unavailable.</p>';
+          }
+        };
+
+        searchInput.addEventListener("input", debounce(fetchLiveResults, 300));
+      });
+    </script>
+
+    <!-- include jquery & bootstrap js -->
+    <script defer src="/media/js/libs/jquery.min.js"></script>
+    <script defer src="/media/js/libs/bootstrap.min.js"></script>
+
+    <!-- include scripts -->
+    <script defer src="/media/js/libs/anime.min.js"></script>
+    <script defer src="/media/js/libs/swiper-bundle.min.js"></script>
+    <script defer src="/media/js/libs/scrollmagic.min.js"></script>
+    <script defer src="/media/js/helpers/data-attr-helper.js"></script>
+    <script defer src="/media/js/helpers/swiper-helper.js"></script>
+    <script defer src="/media/js/helpers/anime-helper.js"></script>
+    <script
+      defer
+      src="/media/js/helpers/anime-helper-defined-timelines.js"
+    ></script>
+    <script defer src="/media/js/uikit-components-bs.js"></script>
+
+    <!-- include app script -->
+    <script src="/media/js/utils/verify-account.js"></script>
+    <script defer src="/media/js/app.js"></script>
+    <script src="/media/js/utils/login.js"></script>
+    <script src="/media/js/utils/register.js"></script>
+    <script src="/media/js/utils/logout.js"></script>
+    <script src="/media/js/utils/toastBox.js"></script>
+    <script src="/media/js/utils/newsletterSignup.js"></script>
+
+    <script>
+      // Schema toggle via URL
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const getSchema = urlParams.get("schema");
+      if (getSchema === "dark") {
+        setDarkMode(1);
+      } else if (getSchema === "light") {
+        setDarkMode(0);
+      }
+    </script>
+  </body>
 </html>
