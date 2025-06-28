@@ -104,7 +104,8 @@
             <div class="content-wrap row child-col-12 lg:child-cols g-4 lg:g-6">
                 <div class="lg:col-8 uc-first-column">
                     <div class="max-w-lg">
-                        <div class="post-content panel fs-6 md:fs-5" data-uc-lightbox="animation: scale">
+                        <div class="post-content panel fs-6 md:fs-5">
+                            {% comment %} data-uc-lightbox="animation: scale" {% endcomment %}
                             <span class="text-black dark:text-white" style="text-align:justify;">{{article.content|safe}}</span>
                         </div>
                         <div class="post-footer panel vstack sm:hstack gap-3 justify-between justifybetween border-top py-4 mt-4 xl:py-9 xl:mt-9">
