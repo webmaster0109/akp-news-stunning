@@ -205,6 +205,7 @@ class NewsComment(BaseModel):
 
 class LiveUpdates(BaseModel):
     title = models.CharField(max_length=255)
+    slug = models.ForeignKey(News, on_delete=models.CASCADE, null=True, blank=True, related_name="live_updates")
     is_active = models.BooleanField(default=True)
 
     class Meta:

@@ -69,14 +69,14 @@
                                                             <span class="h4 lg:h2 ft-tertiary fst-italic text-center text-primary m-0 min-w-24px">{{forloop.counter}}</span>
                                                             <div class="post-header panel vstack justify-between gap-1">
                                                                 <h3 class="post-title m-0" style="font-size: 16px; font-weight: 600; color: #000000;">
-                                                                    <a class="text-none hover:text-primary duration-150" href="javascript:void(0);">{{update.created_at|date:"h:i A"}}</a>
+                                                                    {{update.created_at|date:"h:i A"}}
                                                                 </h3>
                                                                 <div class="post-meta panel hstack justify-between fs-7 text-gray-900 dark:text-white text-opacity-60 d-none md:d-flex">
                                                                     <div class="meta">
                                                                         <div class="hstack gap-2">
                                                                             <div>
                                                                                 <div class="post-date hstack gap-narrow">
-                                                                                    <span>{{update.title}}</span>
+                                                                                    <span><a class="text-none hover:text-primary duration-150" href="{{updated.slug}}">{{update.title}}</a></span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

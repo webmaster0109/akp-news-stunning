@@ -32,7 +32,7 @@ def index_akp_news(request):
     business_news = article.filter(category__name="व्यापार")
     entertainment_news = article.filter(category__name="मनोरंजन")
 
-    live_updates = LiveUpdates.objects.all().order_by('-created_at').filter(is_active=True)
+    live_updates = LiveUpdates.objects.all().order_by('-created_at').filter(is_active=True)[:5]
 
     active_ads = Advertisements.objects.filter(is_active=True)
     random_ads = active_ads.order_by('?') if active_ads.exists() else None
