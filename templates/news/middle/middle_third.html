@@ -16,9 +16,7 @@
                             <div class="block-content">
                                 <div class="panel row child-cols-12 md:child-cols g-2 lg:g-4 col-match sep-y" data-uc-grid>
                                     <div class="col-12 md:col-6 order-0 md:order-1">
-                                        {% for article in articles|slice:":1" %}
-                                        {% if article.category.name == "खेल" %}
-                                        {% if article.is_featured == True %}
+                                        {% for article in sports_news|slice:":1" %}
                                         <div>
                                             <article class="post type-post panel uc-transition-toggle vstack gap-2 lg:gap-3 h-100 overflow-hidden uc-dark">
                                                 <div class="post-media panel overflow-hidden h-100">
@@ -58,16 +56,11 @@
                                                 </div>
                                             </article>
                                         </div>
-                                        {% endif %}
-                                        {% else %}
-                                        <div>No News</div>
-                                        {% endif %}
                                         {% endfor %}
                                     </div>
                                     <div class="order-1 md:order-0">
                                         <div class="row child-cols-12 g-2 lg:g-4 sep-x" data-uc-grid>
-                                            {% for article in articles|slice:"1:4" %}
-                                            {% if article.category.name == "खेल" %}
+                                            {% for article in sports_news|slice:"1:4" %}
                                             <div>
                                                 <article class="post type-post panel uc-transition-toggle">
                                                     <div class="row child-cols g-2 lg:g-3" data-uc-grid>
@@ -92,9 +85,6 @@
                                                     </div>
                                                 </article>
                                             </div>
-                                            {% else %}
-                                            <div>No News</div>
-                                            {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -114,8 +104,7 @@
                             </div>
                             <div class="block-content">
                                 <div class="row child-cols-12 g-2 lg:g-4 sep-x" data-uc-grid>
-                                    {% for article in articles|slice:":4" %}
-                                    {% if article.category.name == "अंतरराष्ट्रीय" %}
+                                    {% for article in international_news|slice:":4" %}
                                     <div>
                                         <article class="post type-post panel uc-transition-toggle">
                                             <div class="row child-cols g-2 lg:g-3" data-uc-grid>
@@ -140,9 +129,6 @@
                                             </div>
                                         </article>
                                     </div>
-                                    {% else %}
-                                    <div>No News</div>
-                                    {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>

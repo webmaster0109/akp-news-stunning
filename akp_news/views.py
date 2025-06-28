@@ -24,6 +24,14 @@ def index_akp_news(request):
 
     article = News.objects.all().order_by('-published_at').filter(is_published=True)
 
+    politics_news = article.filter(category__name="राजनीति")
+    national_news = article.filter(category__name="राष्ट्रीय")
+    sports_news = article.filter(category__name="खेल")
+    international_news = article.filter(category__name="अंतरराष्ट्रीय")
+    technology_news = article.filter(category__name="तकनीक")
+    business_news = article.filter(category__name="व्यापार")
+    entertainment_news = article.filter(category__name="मनोरंजन")
+
     live_updates = LiveUpdates.objects.all().order_by('-created_at').filter(is_active=True)
 
     active_ads = Advertisements.objects.filter(is_active=True)
@@ -34,7 +42,14 @@ def index_akp_news(request):
         'news_banners': news_banner,
         'articles': article,
         'live_updates': live_updates,
-        'random_ads': random_ads
+        'random_ads': random_ads,
+        'politics_news': politics_news,
+        'national_news': national_news,
+        'sports_news': sports_news,
+        'international_news': international_news,
+        'technology_news': technology_news,
+        'business_news': business_news,
+        'entertainment_news': entertainment_news
     }
 
     return render(request, template_name='base/index.html', context=context)

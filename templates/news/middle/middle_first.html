@@ -17,9 +17,7 @@
                                 <div class="panel row child-cols-12 md:child-cols g-2 lg:g-4 col-match sep-y" data-uc-grid>
                                     <div class="col-12 md:col-6 order-0 md:order-1">
                                         <div>
-                                            {% for article in articles|slice:":1" %}
-                                            {% if article.category.name == "राजनीति" %}
-                                            {% if article.is_featured == True %}
+                                            {% for article in politics_news|slice:":1" %}
                                             <article class="post type-post panel uc-transition-toggle vstack gap-2 lg:gap-3 h-100 overflow-hidden uc-dark">
                                                 <div class="post-media panel overflow-hidden h-100">
                                                     <div class="featured-image bg-gray-25 dark:bg-gray-800 h-100 d-none md:d-block">
@@ -57,18 +55,13 @@
                                                     </div>
                                                 </div>
                                             </article>
-                                            {% endif %}
-                                            {% else %}
-                                            No News
-                                            {% endif %}
                                             
                                             {% endfor %}
                                         </div>
                                     </div>
                                     <div class="order-1 md:order-0">
                                         <div class="row child-cols-12 g-2 lg:g-4 sep-x" data-uc-grid>
-                                            {% for article in articles|slice:"1:4" %}
-                                            {% if article.category.name == "राजनीति" %}
+                                            {% for article in politics_news|slice:"1:4" %}
                                             <div>
                                                 <article class="post type-post panel uc-transition-toggle">
                                                     <div class="row child-cols g-2 lg:g-3" data-uc-grid>
@@ -93,8 +86,6 @@
                                                     </div>
                                                 </article>
                                             </div>
-                                            {% else %}<div>No News</div>
-                                            {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -114,8 +105,7 @@
                             </div>
                             <div class="block-content">
                                 <div class="row child-cols-12 g-2 lg:g-4 sep-x" data-uc-grid>
-                                    {% for article in articles|slice:":4" %}
-                                    {% if article.category.name == "राष्ट्रीय" %}
+                                    {% for article in national_news|slice:":4" %}
                                     <div>
                                         <article class="post type-post panel uc-transition-toggle">
                                             <div class="row child-cols g-2 lg:g-3" data-uc-grid>
@@ -140,8 +130,6 @@
                                             </div>
                                         </article>
                                     </div>
-                                    {% else %}<div>No News</div>
-                                    {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>
