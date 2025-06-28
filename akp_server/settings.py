@@ -42,7 +42,6 @@ AUTH_USER_MODEL = 'akp_accounts.CustomUser'
 
 MAX_ADMIN_CONCURRENT_SESSIONS = 2
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 7200
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
