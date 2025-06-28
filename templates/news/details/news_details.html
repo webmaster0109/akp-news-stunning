@@ -77,7 +77,8 @@
         <div class="post-header">
             <div class="panel vstack gap-4 md:gap-6 xl:gap-8 text-center">
                 <div class="panel vstack items-center max-w-1000px sm:max-w-1200px mx-auto gap-2 md:gap-3">
-                    <h1 class="h6 sm:h4 lg:h2">{{article.title}}</h1>
+                    <h1 class="h6 sm:h4 lg:h2" style="font-weight: 700; line-height: 50px;">{{article.title}}</h1>
+                    <h2 style="font-size: 20px; font-weight: 500;">{{article.summary}}</h2>
                     <ul class="post-share-icons nav-x gap-1 dark:text-white">
                         <li>
                             <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}&quote={{ article.title|urlencode }}" target="_blank"><i class="unicon-logo-facebook icon-1"></i></a>
@@ -104,7 +105,7 @@
                 <div class="lg:col-8 uc-first-column">
                     <div class="max-w-lg">
                         <div class="post-content panel fs-6 md:fs-5" data-uc-lightbox="animation: scale">
-                            <span class="text-black dark:text-white">{{article.content|safe}}</span>
+                            <span class="text-black dark:text-white" style="text-align:justify;">{{article.content|safe}}</span>
                         </div>
                         <div class="post-footer panel vstack sm:hstack gap-3 justify-between justifybetween border-top py-4 mt-4 xl:py-9 xl:mt-9">
                             <ul class="nav-x gap-narrow text-primary">
