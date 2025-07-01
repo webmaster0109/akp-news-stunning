@@ -10,7 +10,7 @@
             <div class="widget-content">
                 <a class="cstack max-w-300px mx-auto text-none" href="{{ad.banner_link}}" target="_blank" rel="nofollow">
                     <img class="d-none sm:d-block" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
-                    <img class="d-block sm:d-none" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
+                    <img class="d-block sm:d-none" src="{% if ad.banner_image.url is None %}javascript:void(0);{% else %}{{ad.banner_image.url}}{% endif %}" alt="{{ad.banner_title}}">
                 </a>
             </div>
         </div>
