@@ -23,7 +23,7 @@ def index_akp_news(request):
     news_tags = NewsTagBanner.objects.all()
     
     news_banner = NewsHomeBanner.objects.filter(is_active=True).exclude(
-        Q(banner_image__null=True) | Q(banner_image__exact='')
+        Q(banner_image__isnull=True) | Q(banner_image__exact='')
     )
 
     article = News.objects.all().filter(is_published=True).order_by('-published_at')
