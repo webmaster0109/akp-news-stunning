@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from akp_epapers.models import Epaper
 from .search import perform_search
+from django.db.models import Q, Count
 # Create your views here.
 
 
@@ -20,9 +21,12 @@ def handler404(request, exception=None):
 def index_akp_news(request):
 
     news_tags = NewsTagBanner.objects.all()
-    news_banner = NewsHomeBanner.objects.all()
+    
+    news_banner = NewsHomeBanner.objects.filter(is_active=True).exclude(
+        Q(banner_image__null=True) | Q(banner_image__exact='')
+    )
 
-    article = News.objects.all().order_by('-published_at').filter(is_published=True)
+    article = News.objects.all().filter(is_published=True).order_by('-published_at')
 
     politics_news = article.filter(category__name="राजनीति")
     national_news = article.filter(category__name="राष्ट्रीय")
