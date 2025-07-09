@@ -30,7 +30,7 @@ def get_common_context():
     }
 
 def index_akp_news(request):
-    common_context = get_common_context()
+    # common_context = get_common_context()
 
     news_tags = NewsTagBanner.objects.all()
     
@@ -64,7 +64,6 @@ def index_akp_news(request):
         'technology_news': technology_news,
         'business_news': business_news,
         'entertainment_news': entertainment_news,
-        **common_context
     }
 
     return render(request, template_name='base/index.html', context=context)
