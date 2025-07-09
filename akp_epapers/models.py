@@ -70,7 +70,7 @@ class Epaper(HomeBaseModel):
 
                     # Set zoom factor to get high quality image
                     zoom_factor = 4.0
-                    matrix = fitz.Matrix(zoom_factor, zoom_factor)
+                    matrix = pymupdf.Matrix(zoom_factor, zoom_factor)
                     pix = first_page.get_pixmap(matrix=matrix)
                     
                     # Convert pixmap to PIL Image for cropping
