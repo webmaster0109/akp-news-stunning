@@ -75,6 +75,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "akp_server.wsgi.application"
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake', # A unique name for this cache instance
+    }
+}
+
 # Database
 tmpPostgres = urlparse('postgresql://akp_news_owner:npg_ZzmU53FbAEgO@ep-ancient-firefly-a8mtjyub-pooler.eastus2.azure.neon.tech/akp_news?sslmode=require')
 

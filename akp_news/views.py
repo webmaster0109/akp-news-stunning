@@ -30,12 +30,13 @@ def get_common_context():
     }
 
 def index_akp_news(request):
+    common_context = get_common_context()
 
     news_tags = NewsTagBanner.objects.all()
     
     news_banner = NewsHomeBanner.objects.filter(is_active=True)
 
-    article = News.objects.filter(is_published=True, is_active=True).select_related('author').order_by('-published_at')
+    article = News.objects.filter(is_published=True, is_active=True).select_related('author', 'category').prefetch_related('tags').order_by('-published_at')
 
     politics_news = article.filter(category__name="राजनीति")
     national_news = article.filter(category__name="राष्ट्रीय")
@@ -62,7 +63,8 @@ def index_akp_news(request):
         'international_news': international_news,
         'technology_news': technology_news,
         'business_news': business_news,
-        'entertainment_news': entertainment_news
+        'entertainment_news': entertainment_news,
+        **common_context
     }
 
     return render(request, template_name='base/index.html', context=context)
