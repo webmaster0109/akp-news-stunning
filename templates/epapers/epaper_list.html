@@ -22,7 +22,7 @@
                                         
                                     <div class="post-header panel vstack gap-1 lg:gap-2">
                                         <h3 class="post-title h6 sm:h5 xl:h4 m-0 text-truncate-2 m-0 pt-2">
-                                            <a class="text-none" href="{% url 'view_epaper' epaper.id %}">{{epaper.meta_title}}</a>
+                                            <a class="text-none" href="javascript:void(0);">{{epaper.meta_title}}</a>
                                         </h3>
                                         {% if request.user.is_authenticated %}
                                         {% with user_download_count=request.user.epaper_downloads download_limit=365 %}
