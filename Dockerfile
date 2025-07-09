@@ -19,7 +19,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
-WORKDIR /akp_news
+WORKDIR /app
 
 # Create a virtual environment
 RUN python -m venv /opt/venv
@@ -42,11 +42,16 @@ FROM python:3.12-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-
+# Install runtime system dependencies
+# libpq5 is required for psycopg2 to connect to PostgreSQL
+# libstdc++6 is required for pymupdf
+# lsof and procps are useful for debugging running containers
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libpq5 \
     libstdc++6 \
+    lsof \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user for security
@@ -56,11 +61,11 @@ RUN addgroup --system app && adduser --system --group app
 COPY --from=builder /opt/venv /opt/venv
 
 # Copy the application code
-WORKDIR /akp_news
+WORKDIR /app
 COPY . .
 
 # Set ownership of the app directory to the non-root user
-RUN chown -R app:app /akp_news
+RUN chown -R app:app /app
 
 # Switch to the non-root user
 USER app
