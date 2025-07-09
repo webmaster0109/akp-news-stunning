@@ -3,7 +3,7 @@ from Base.base import HomeBaseModel
 from akp_accounts.models import CustomUser
 from akp_news.base import BaseModel
 
-import fitz  # PyMuPDF for PDF manipulation
+import pymupdf  # PyMuPDF for PDF manipulation
 from django.core.files.base import ContentFile
 from io import BytesIO
 from PIL import Image, ImageOps
@@ -50,7 +50,7 @@ class Epaper(HomeBaseModel):
                 self.file.seek(original_position)
                 
                 # Open PDF document from the stream
-                pdf_document = fitz.open(stream=pdf_file_stream, filetype="pdf")
+                pdf_document = pymupdf.open(stream=pdf_file_stream, filetype="pdf")
 
                 # --- 1. Extract Metadata ---
                 metadata = pdf_document.metadata
