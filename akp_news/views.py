@@ -18,13 +18,24 @@ def handler404(request, exception=None):
     response.status_code = 404
     return response
 
+def get_common_context():
+    """
+    Returns a dictionary with common context data used in multiple views.
+    This helps to avoid redundant database queries.
+    """
+    # .only() is used to fetch only the specified fields, making the query lighter.
+    return {
+        'categories': NewsCategory.objects.filter(is_active=True).only('name', 'slug'),
+        'tags': NewsTag.objects.filter(is_active=True).only('name', 'slug'),
+    }
+
 def index_akp_news(request):
 
     news_tags = NewsTagBanner.objects.all()
     
     news_banner = NewsHomeBanner.objects.filter(is_active=True)
 
-    article = News.objects.all().filter(is_published=True).order_by('-published_at')
+    article = News.objects.filter(is_published=True, is_active=True).select_related('author').order_by('-published_at')
 
     politics_news = article.filter(category__name="राजनीति")
     national_news = article.filter(category__name="राष्ट्रीय")
