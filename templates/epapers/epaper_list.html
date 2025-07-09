@@ -26,7 +26,7 @@
                                         {% if request.user.is_authenticated %}
                                         {% with user_download_count=request.user.epaper_downloads download_limit=365 %}
                                         {% if user_download_count < download_limit %}
-                                            <a class="btn btn-primary btn-sm" href="{% url 'download_epaper' epaper.id %}">
+                                            <a class="btn btn-primary btn-sm" href="{% url 'view_epaper' epaper.id %}">
                                                 <i class="icon-narrow unicon-download"></i>
                                                 <span>Download</span>
                                             </a>

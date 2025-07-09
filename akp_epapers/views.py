@@ -5,6 +5,17 @@ from .models import Epaper, EpaperDownload
 
 # Create your views here.
 
+def view_epaper(request, epaper_id):
+    epaper = get_object_or_404(Epaper, id=epaper_id)
+    filename = str(epaper.file.name).split('/')[-1]
+
+    context = {
+        'epaper': epaper,
+        'filename': filename,
+    }
+
+    return render(request, template_name="epapers/epaper_detail.html", context=context)
+
 @login_required
 def download_epaper_view(request, epaper_id):
     epaper = get_object_or_404(Epaper, id=epaper_id)

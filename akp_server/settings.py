@@ -75,13 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "akp_server.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
+# Database
 tmpPostgres = urlparse('postgresql://akp_news_owner:npg_ZzmU53FbAEgO@ep-ancient-firefly-a8mtjyub-pooler.eastus2.azure.neon.tech/akp_news?sslmode=require')
 
 DATABASES = {
@@ -92,6 +86,8 @@ DATABASES = {
         'PASSWORD': tmpPostgres.password,
         'HOST': tmpPostgres.hostname,
         'PORT': 5432,
+
+        'DISABLE_SERVER_SIDE_CURSORS': True,
     }
 }
 
