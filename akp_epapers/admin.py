@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Epaper, EpaperDownload
+from .models import Epaper, EpaperDownload, ShortURL
 from akp_accounts.admin import limited_admin_site
 # Register your models here.
 
@@ -8,11 +8,19 @@ from akp_accounts.admin import limited_admin_site
 
 class EpaperDownloadInline(admin.TabularInline):
   model = EpaperDownload
+  extra = 0
+
+class ShortURLInline(admin.TabularInline):
+    model = ShortURL
+    extra = 0
+    fields = ('short_url', 'created_at')
+    readonly_fields = ('short_url', 'created_at')
 
 class EpaperAdmin(admin.ModelAdmin):
     list_display = ('meta_title', 'timestamp', 'is_active')
     search_fields = ('meta_title',)
     list_filter = ('is_active', 'timestamp')
-    inlines = [EpaperDownloadInline]
+    inlines = [ShortURLInline, EpaperDownloadInline]
   
 limited_admin_site.register(Epaper, EpaperAdmin)
+limited_admin_site.register(ShortURL)

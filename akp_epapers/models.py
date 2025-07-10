@@ -7,6 +7,8 @@ import pymupdf  # PyMuPDF for PDF manipulation
 from django.core.files.base import ContentFile
 from io import BytesIO
 from PIL import Image, ImageOps
+import string
+import random
 # Create your models here.
 
 
@@ -22,6 +24,9 @@ class Epaper(HomeBaseModel):
     def __str__(self):
         return self.meta_title
     
+    def get_new_absolute_url(self):
+        return f"/epapers/{self.id}/"
+
     def save(self, *args, **kwargs):
         """
         Overrides the save method to extract PDF metadata and a cropped thumbnail image,
@@ -143,6 +148,30 @@ class Epaper(HomeBaseModel):
         # Call the original save method from the parent class
         super().save(*args, **kwargs)
 
+
+class ShortURL(models.Model):
+    epaper = models.OneToOneField(Epaper, on_delete=models.CASCADE, related_name='short_url')
+    short_url = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Short URLs"
+
+    def __str__(self):
+        return f"{self.epaper} - {self.short_url}"
+    
+    def save(self, *args, **kwargs):
+        if not self.short_url:
+            self.short_url = self.generate_short_url()
+        super().save(*args, **kwargs)
+    
+    @staticmethod
+    def generate_short_url(length=6):
+        characters = string.ascii_letters + string.digits
+        while True:
+            code = ''.join(random.choice(characters) for _ in range(length))
+            if not ShortURL.objects.filter(short_url=code).exists():
+                return code
 
 class EpaperDownload(BaseModel):
     epaper = models.ForeignKey(Epaper, on_delete=models.CASCADE, related_name='downloads')
