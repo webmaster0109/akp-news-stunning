@@ -239,4 +239,4 @@ class Advertisements(BaseModel):
     is_active = models.BooleanField(default=True, null=True, blank=True)
     
     def __str__(self):
-        return self.banner_title
+        return self.banner_title or f"Advertisement {self.id}"

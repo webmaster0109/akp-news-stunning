@@ -29,6 +29,35 @@ def get_common_context():
         'tags': NewsTag.objects.filter(is_active=True).only('name', 'slug'),
     }
 
+# def advertisement_context():
+
+#     active_ads = Advertisements.objects.filter(is_active=True)
+
+#     ads_by_size = {}
+#     for ad in active_ads:
+#         if ad.banner_size not in ads_by_size:
+#             ads_by_size[ad.banner_size] = []
+#         ads_by_size[ad.banner_size].append(ad)
+ 
+#     for size in ads_by_size:
+#         random.shuffle(ads_by_size[size])
+
+#     return ads_by_size
+
+def get_random_ad_for_size(banner_size):
+    """
+    Returns a single random advertisement for the specified size
+    """
+    ads = Advertisements.objects.filter(
+        is_active=True,
+        banner_size=banner_size
+    )
+
+    print(ads)
+    if not ads.exists():
+        return None  # No ads available for this size
+    return random.choice(ads)
+
 def index_akp_news(request):
     # common_context = get_common_context()
 
@@ -48,15 +77,18 @@ def index_akp_news(request):
 
     live_updates = LiveUpdates.objects.all().order_by('-created_at').filter(is_active=True)[:5]
 
-    active_ads = Advertisements.objects.filter(is_active=True)
-    random_ads = active_ads.order_by('?') if active_ads.exists() else None
+    home_banner_640 = get_random_ad_for_size('Home Banner 640x926')
+    home_banner_640_last = get_random_ad_for_size('Home Banner 640x926')
+    home_banner_2496 = get_random_ad_for_size('Home Banner 2496x300')
 
     context = {
         'news_tags': news_tags,
         'news_banners': news_banner,
         'articles': article,
         'live_updates': live_updates,
-        'random_ads': random_ads,
+        'home_banner_640': home_banner_640,
+        'home_banner_640_last': home_banner_640_last,
+        'home_banner_2496': home_banner_2496,
         'politics_news': politics_news,
         'national_news': national_news,
         'sports_news': sports_news,
@@ -205,10 +237,6 @@ def add_comment_view(request):
             parent=parent_comment
         )
         return JsonResponse({'status': 'success', 'message': 'Comment submitted successfully. Now waiting for approval!'}, status=200)
-        # messages.success(request, 'Your comment has been posted successfully!')
-        # Redirect back to the news detail page
-        # Ensure you have a URL pattern named 'news_detail_by_slug' that takes a slug,
-        # or 'news_detail_by_id' that takes an ID, etc.
 
     except News.DoesNotExist:
         # messages.error(request, 'News article not found.')
