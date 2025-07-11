@@ -32,6 +32,12 @@ class Epaper(HomeBaseModel):
         Overrides the save method to extract PDF metadata and a cropped thumbnail image,
         populating the fields inherited from HomeBaseModel.
         """
+
+        if not hasattr(self, 'short_url') or not self.short_url.short_url:
+            # Generate a short URL if it doesn't exist and assign it to self.short_url
+            short_url_obj, created = ShortURL.objects.get_or_create(epaper=self)
+            self.short_url = short_url_obj
+
         # Check if the file is new or has been changed to avoid reprocessing
         process_pdf = True
         if not self._state.adding: # if this is an existing object

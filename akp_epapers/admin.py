@@ -17,10 +17,13 @@ class ShortURLInline(admin.TabularInline):
     readonly_fields = ('short_url', 'created_at')
 
 class EpaperAdmin(admin.ModelAdmin):
-    list_display = ('meta_title', 'timestamp', 'is_active')
+    list_display = ('meta_title', 'timestamp', 'is_active', 'get_short_url')
     search_fields = ('meta_title',)
     list_filter = ('is_active', 'timestamp')
     inlines = [ShortURLInline, EpaperDownloadInline]
-  
+
+    def get_short_url(self, obj):
+        return f"https://aajkaprahari.com/s/{obj.short_url.short_url}/" if obj.short_url else 'No URL'
+
 limited_admin_site.register(Epaper, EpaperAdmin)
 limited_admin_site.register(ShortURL)

@@ -505,7 +505,12 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">Share Link:</label>
+                    <label class="form-label" style="display: flex; gap: 5px;">
+                        <div>
+                            <svg id='External_Link_24' width='20' height='20' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/><g transform="matrix(1.11 0 0 1.11 12 12)" ><path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" translate(-12, -12)" d="M 5 3 C 3.9069372 3 3 3.9069372 3 5 L 3 19 C 3 20.093063 3.9069372 21 5 21 L 19 21 C 20.093063 21 21 20.093063 21 19 L 21 12 L 19 12 L 19 19 L 5 19 L 5 5 L 12 5 L 12 3 L 5 3 z M 14 3 L 14 5 L 17.585938 5 L 8.2929688 14.292969 L 9.7070312 15.707031 L 19 6.4140625 L 19 10 L 21 10 L 21 3 L 14 3 z" stroke-linecap="round" /></g></svg>
+                        </div>
+                        <div>Share Link:</div>
+                    </label>
                     <input type="text" class="form-input" id="shareLink" readonly>
                 </div>
             </div>
@@ -745,7 +750,7 @@
                 return;
             }
             
-            const currentUrl = window.location.href;
+            const currentUrl = window.location.origin + '/s/{{epaper.short_url.short_url}}/'; // Use the short URL from the context
             const shareLink = `${currentUrl}`;
             
             document.getElementById('shareLink').value = shareLink;
