@@ -12,8 +12,6 @@ def view_epaper(request, epaper_id):
     short_url, created = ShortURL.objects.get_or_create(epaper=epaper)
     if created:
         short_url.save()
-    
-    print(epaper.short_url.short_url)  # Debugging line to check the short URL
 
     context = {
         'epaper': epaper,
