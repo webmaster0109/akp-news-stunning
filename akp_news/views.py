@@ -29,21 +29,6 @@ def get_common_context():
         'tags': NewsTag.objects.filter(is_active=True).only('name', 'slug'),
     }
 
-# def advertisement_context():
-
-#     active_ads = Advertisements.objects.filter(is_active=True)
-
-#     ads_by_size = {}
-#     for ad in active_ads:
-#         if ad.banner_size not in ads_by_size:
-#             ads_by_size[ad.banner_size] = []
-#         ads_by_size[ad.banner_size].append(ad)
- 
-#     for size in ads_by_size:
-#         random.shuffle(ads_by_size[size])
-
-#     return ads_by_size
-
 def get_random_ad_for_size(banner_size):
     """
     Returns a single random advertisement for the specified size
@@ -52,8 +37,6 @@ def get_random_ad_for_size(banner_size):
         is_active=True,
         banner_size=banner_size
     )
-
-    print(ads)
     if not ads.exists():
         return None  # No ads available for this size
     return random.choice(ads)
@@ -104,7 +87,7 @@ def index_akp_news(request):
 def news_details(request, slug):
     article = get_object_or_404(News, slug=slug, is_published=True)
     active_ads = Advertisements.objects.filter(is_active=True)
-    random_ads = active_ads.order_by('?') if active_ads.exists() else []
+    random_ads = get_random_ad_for_size('News Article Banner 600x700') if active_ads.exists() else None
 
     comments = get_nested_comments(article.id)
 

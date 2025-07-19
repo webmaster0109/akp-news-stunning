@@ -2,6 +2,12 @@ from pathlib import Path
 import os
 from urllib.parse import urlparse
 
+try:
+  from decouple import config
+except ImportError:
+  import os
+  config = os.environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -98,10 +104,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -118,9 +120,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = "en-in"
 
 TIME_ZONE = "Asia/Kolkata"
@@ -129,16 +128,39 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'public/static/')
-STATICFILES_DIR = {
-    os.path.join(BASE_DIR, 'public/static/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'public/static/')
+# STATICFILES_DIR = {
+#     os.path.join(BASE_DIR, 'public/static/')
+# }
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'public/')
+
+CLOUDFLARE_R2_BUCKET=config("CLOUDFLARE_R2_BUCKET")
+CLOUDFLARE_R2_BUCKET_ENDPOINT=config("CLOUDFLARE_R2_BUCKET_ENDPOINT")
+CLOUDFLARE_R2_ACCESS_KEY=config("CLOUDFLARE_R2_ACCESS_KEY")
+CLOUDFLARE_R2_SECRET_KEY=config("CLOUDFLARE_R2_SECRET_KEY")
+
+CLOUDFLARE_R2_CONFIG_OPTIONS = {
+    "bucket_name": CLOUDFLARE_R2_BUCKET,
+    "access_key": CLOUDFLARE_R2_ACCESS_KEY,
+    "secret_key": CLOUDFLARE_R2_SECRET_KEY,
+    "endpoint_url": CLOUDFLARE_R2_BUCKET_ENDPOINT,
+    "default_acl": "public-read",
+    "signature_version": "s3v4",
 }
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'public/')
+
+STORAGES = {
+    "default": {
+      "BACKEND": "akp_server.helpers.cloudflare.storages.MediaFileStorage",
+      "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
+    },
+    "staticfiles": {
+      "BACKEND": "akp_server.helpers.cloudflare.storages.StaticFileStorage",
+      "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
+    },
+}
 
 CKEDITOR_5_FILE_STORAGE = "akp_server.storage.CustomStorage"
 
@@ -238,12 +260,12 @@ CKEDITOR_5_CONFIGS = {
     },
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'akpnews2@gmail.com'
-EMAIL_HOST_PASSWORD = 'oxertjciffrwibqg'
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

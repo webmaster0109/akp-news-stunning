@@ -6,4 +6,4 @@ gunicorn
 whitenoise
 psycopg2
 PyMuPDF
-
+python-decouple
