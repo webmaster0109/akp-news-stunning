@@ -9,7 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from akp_epapers.models import Epaper
 from .search import perform_search
-from django.db.models import Q, Count
+
+from django.core.cache import cache
 # Create your views here.
 
 
@@ -43,6 +44,9 @@ def get_random_ad_for_size(banner_size):
 
 def index_akp_news(request):
     # common_context = get_common_context()
+
+    cache_key = 'homepage_context_data'
+    context = cache.get(cache_key)
 
     news_tags = NewsTagBanner.objects.all()
     

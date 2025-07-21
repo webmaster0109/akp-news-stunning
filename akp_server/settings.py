@@ -5,8 +5,7 @@ from urllib.parse import urlparse
 try:
   from decouple import config
 except ImportError:
-  import os
-  config = os.environ
+  config = os.environ.get
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-6txf^pg1^h9sxzf5wpj1g*kp0z67c)@)_ie#^($c(58rh_j%ty"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,7 +45,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'akp_accounts.CustomUser'
 
-MAX_ADMIN_CONCURRENT_SESSIONS = 2
+MAX_ADMIN_CONCURRENT_SESSIONS = 50
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 MIDDLEWARE = [
@@ -83,8 +82,9 @@ WSGI_APPLICATION = "akp_server.wsgi.application"
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake', # A unique name for this cache instance
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '127.0.0.1:11211',
+        'TIMEOUT': 600, # Default cache timeout in seconds (10 minutes)
     }
 }
 
@@ -129,7 +129,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'public/static/')
 # STATICFILES_DIR = {
 #     os.path.join(BASE_DIR, 'public/static/')
@@ -137,28 +137,29 @@ STATIC_URL = '/static/'
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'public/')
 
-CLOUDFLARE_R2_BUCKET=config("CLOUDFLARE_R2_BUCKET")
+CLOUDFLARE_R2_BUCKET = config("CLOUDFLARE_R2_BUCKET")
 CLOUDFLARE_R2_BUCKET_ENDPOINT=config("CLOUDFLARE_R2_BUCKET_ENDPOINT")
 CLOUDFLARE_R2_ACCESS_KEY=config("CLOUDFLARE_R2_ACCESS_KEY")
 CLOUDFLARE_R2_SECRET_KEY=config("CLOUDFLARE_R2_SECRET_KEY")
 
-CLOUDFLARE_R2_CONFIG_OPTIONS = {
+CLOUDFLARE_R2_CONFIG = {
     "bucket_name": CLOUDFLARE_R2_BUCKET,
     "access_key": CLOUDFLARE_R2_ACCESS_KEY,
     "secret_key": CLOUDFLARE_R2_SECRET_KEY,
     "endpoint_url": CLOUDFLARE_R2_BUCKET_ENDPOINT,
     "default_acl": "public-read",
     "signature_version": "s3v4",
+    "region_name": "auto",
 }
 
 STORAGES = {
     "default": {
       "BACKEND": "akp_server.helpers.cloudflare.storages.MediaFileStorage",
-      "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
+      "OPTIONS": CLOUDFLARE_R2_CONFIG,
     },
     "staticfiles": {
       "BACKEND": "akp_server.helpers.cloudflare.storages.StaticFileStorage",
-      "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS,
+      "OPTIONS": CLOUDFLARE_R2_CONFIG,
     },
 }
 

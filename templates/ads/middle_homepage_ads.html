@@ -5,8 +5,8 @@
         <div class="container max-w-xl">
             <div class="section-inner">
                 <a class="text-none" href="{% if ad.banner_link is None %}javascript:void(0);{% else %}{{ad.banner_link}}{% endif %}" target="_blank" rel="noopener noreferrer">
-                    <img class="d-none md:d-block" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
-                    <img class="d-block md:d-none" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
+                    <img class="d-none md:d-block" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}" loading="lazy">
+                    <img class="d-block md:d-none" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}" loading="lazy">
                 </a>
             </div>
         </div>

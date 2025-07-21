@@ -3,8 +3,8 @@
 <div class="widget ad-widget vstack gap-2 text-center p-2 border">
     <div class="widgt-content">
         <a class="cstack max-w-300px mx-auto text-none" href="{% if ad.banner_link is None %}javascript:void(0);{% else %}{{ad.banner_link}}{% endif %}" target="_blank" rel="noopener noreferrer">
-            <img class="d-block dark:d-none" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
-            <img class="d-none dark:d-block" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}">
+            <img class="d-block dark:d-none" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}" loading="lazy">
+            <img class="d-none dark:d-block" src="{{ad.banner_image.url}}" alt="{{ad.banner_title}}" loading="lazy">
         </a>
     </div>
 </div>
