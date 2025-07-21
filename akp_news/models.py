@@ -6,6 +6,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import NoReverseMatch, reverse
+from .image_optimize import optimize_image
 
 class NewsTagBanner(BaseModel):
     tag_name = models.CharField(max_length=100, null=True, blank=True)
@@ -110,6 +111,26 @@ class News(HomeBaseModel):
     
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        if self.slug:
+            try:
+                old_instance = News.objects.get(slug=self.slug)
+                if old_instance.featured_image != self.featured_image:
+                    optimized_image = optimize_image(self.featured_image)
+                    if optimized_image:
+                        self.featured_image = optimized_image
+                    else:
+                        self.featured_image = old_instance.featured_image
+                    super().save(*args, **kwargs)
+                    return
+            except News.DoesNotExist:
+                pass
+        if self.featured_image:
+            optimized_image = optimize_image(self.featured_image)
+            if optimized_image:
+                self.featured_image = optimized_image
+        super().save(*args, **kwargs)
     
 
 class ViewCountNews(BaseModel):

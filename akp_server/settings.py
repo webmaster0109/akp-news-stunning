@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-6txf^pg1^h9sxzf5wpj1g*kp0z67c)@)_ie#^($c(58rh_j%ty"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,29 +80,31 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "akp_server.wsgi.application"
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': '127.0.0.1:11211',
-        'TIMEOUT': 600, # Default cache timeout in seconds (10 minutes)
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+#         'LOCATION': '127.0.0.1:11211',
+#         'TIMEOUT': 600, # Default cache timeout in seconds (10 minutes)
+#     }
+# }
 
-# Database
-tmpPostgres = urlparse('postgresql://akp_news_owner:npg_ZzmU53FbAEgO@ep-ancient-firefly-a8mtjyub-pooler.eastus2.azure.neon.tech/akp_news?sslmode=require')
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
-
-        'DISABLE_SERVER_SIDE_CURSORS': True,
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# DATABASES = {
+#     "default" : {
+#         'ENGINE': 'django_cf.d1_api',
+#         'CLOUDFLARE_DATABASE_ID': 'cf7be688-53f6-4e8d-b603-8a0c3440d50f',
+#         'CLOUDFLARE_ACCOUNT_ID': 'e160dbaa7bba5fcb8adecf4dfc188c7d',
+#         'CLOUDFLARE_TOKEN': 'X98WH89u6SUs2xOFFzHlcmJ-mdoGejhMKz_C08Xr',
+#     }
+# }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
