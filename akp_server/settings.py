@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "akp_accounts",
     "akp_epapers",
     "admin_akp",
+    "webstories",
 ]
 
 AUTH_USER_MODEL = 'akp_accounts.CustomUser'
@@ -51,6 +52,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",

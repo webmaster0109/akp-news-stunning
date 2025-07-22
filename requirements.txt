@@ -10,4 +10,3 @@ python-decouple
 pymemcache
 django-storages
 django-storages[s3]
-django-cf

@@ -10,6 +10,8 @@ from django.views.generic import ListView
 from akp_epapers.models import Epaper
 from .search import perform_search
 
+from webstories.models import WebStory
+
 from django.core.cache import cache
 # Create your views here.
 
@@ -68,6 +70,8 @@ def index_akp_news(request):
     home_banner_640_last = get_random_ad_for_size('Home Banner 640x926')
     home_banner_2496 = get_random_ad_for_size('Home Banner 2496x300')
 
+    stories = WebStory.objects.filter(is_active=True).order_by('-created_at')
+
     context = {
         'news_tags': news_tags,
         'news_banners': news_banner,
@@ -83,6 +87,7 @@ def index_akp_news(request):
         'technology_news': technology_news,
         'business_news': business_news,
         'entertainment_news': entertainment_news,
+        'stories': stories,
     }
 
     return render(request, template_name='base/index.html', context=context)

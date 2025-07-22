@@ -6,7 +6,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import NoReverseMatch, reverse
-from .image_optimize import optimize_image
+from Base.helpers import optimize_image
 
 class NewsTagBanner(BaseModel):
     tag_name = models.CharField(max_length=100, null=True, blank=True)

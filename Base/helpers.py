@@ -28,4 +28,4 @@ def optimize_image(image_field, target_kb=100, max_width=1000):
         return ContentFile(buffer.getvalue(), name=new_filename)
     except Exception as e:
         print(f"Error optimizing image: {e}")
-        return None   
+        return None
