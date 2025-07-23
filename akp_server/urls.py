@@ -8,7 +8,9 @@ from django.conf import settings
 from akp_epapers.views import download_epaper_view, view_epaper, redirect_short_url
 from akp_accounts.admin import limited_admin_site
 
-from akp_news import views as server_views 
+from akp_news import views as server_views
+
+from webstories.views import story_detail
 
 urlpatterns = [
     path("super-private-admin/", admin.site.urls, name="admin_login"),
@@ -18,6 +20,7 @@ urlpatterns = [
     path("control-admin-center/", include("admin_akp.urls")),
     path('ckeditor5/', include('django_ckeditor_5.urls')),
     path("s/<str:short_url>/", redirect_short_url, name="redirect_short_url"),
+    path("visualstories/<str:slug>/", story_detail, name="story_detail"),
     path("epapers/<str:epaper_id>/", view_epaper, name="view_epaper"),
     path("pdf/<str:epaper_id>/download/", download_epaper_view, name="download_epaper"),
 ]

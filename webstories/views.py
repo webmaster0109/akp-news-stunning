@@ -14,4 +14,4 @@ def story_detail(request, slug):
     'story': story
   }
 
-  return render(request, template_name='webstories/story_detail.html', context=context)
+  return render(request, template_name='news/webstories_html/story_detail.html', context=context)
