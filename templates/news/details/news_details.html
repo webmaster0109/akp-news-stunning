@@ -81,13 +81,13 @@
                     <h2 style="font-size: 20px; font-weight: 500;">{{article.summary}}</h2>
                     <ul class="post-share-icons nav-x gap-1 dark:text-white">
                         <li>
-                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}&quote={{ article.title|urlencode }}" target="_blank"><i class="unicon-logo-facebook icon-1"></i></a>
+                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}&quote={{ article.title|urlencode }}" target="_blank"><i class="bi bi-facebook icon-1"></i></a>
                         </li>
                         <li>
-                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="https://twitter.com/intent/tweet?text={{ article.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="unicon-logo-x-filled icon-1"></i></a>
+                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="https://twitter.com/intent/tweet?text={{ article.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="bi bi-twitter-x icon-1"></i></a>
                         </li>
                         <li>
-                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="javascript:void(0);" onclick="copyCurrentUrl()"><i class="unicon-link icon-1"></i></a>
+                            <a class="btn btn-md p-0 border-gray-900 border-opacity-15 w-32px lg:w-48px h-32px lg:h-48px text-dark dark:text-white dark:border-white hover:bg-primary hover:border-primary hover:text-white rounded-circle" href="javascript:void(0);" onclick="copyCurrentUrl()"><i class="bi bi-share icon-1"></i></a>
                         </li>
                     </ul>
                 </div>
