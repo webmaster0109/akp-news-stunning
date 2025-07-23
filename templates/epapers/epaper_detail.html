@@ -490,6 +490,7 @@
             </div>
             <div class="error-message" id="errorDiv">
                 <div class="error-icon">⚠️</div>
+                <input type="text" id="pdfFileInput" value="{{ epaper.file.url }}" style="display:none;">
                 <div>Error loading PDF file</div>
                 <div>Please check that the file path is correct and the file exists.</div>
             </div>
@@ -529,8 +530,10 @@
         let pdfData = null;
         let fileName = '{{filename}}';
 
+        const pdfLink = document.getElementById('pdfFileInput');
+
         // Configure the path to your local PDF file
-        const LOCAL_PDF_PATH = '{{epaper.file.url}}'; // Change this to your PDF file path
+        const LOCAL_PDF_PATH = pdfLink.value; // Change this to your PDF file path
 
         // Initialize PDF.js
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
