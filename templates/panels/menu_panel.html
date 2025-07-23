@@ -7,7 +7,7 @@
                 </a>
             </div>
             <button class="uc-offcanvas-close p-0 icon-3 btn border-0 dark:text-white dark:text-opacity-50 hover:text-primary hover:rotate-90 duration-150 transition-all" type="button">
-                <i class="unicon-close"></i>
+                <i class="bi bi-x"></i>
             </button>
         </header>
 
@@ -45,10 +45,10 @@
             <ul class="social-icons nav-x mt-4">
                 <li>
                     {% for social in social_accounts %}
-                            <a href="{% if social.facebook %}{{social.facebook}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-facebook"></i></a>
-                            <a href="{% if social.twitter %}{{social.twitter}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-x-filled"></i></a>
-                            <a href="{% if social.instagram %}{{social.instagram}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-instagram"></i></a>
-                            <a href="{% if social.youtube %}{{social.youtube}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-youtube"></i></a>
+                            <a href="{% if social.facebook %}{{social.facebook}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 bi bi-facebook"></i></a>
+                            <a href="{% if social.twitter %}{{social.twitter}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 ubi bi-twitter-x"></i></a>
+                            <a href="{% if social.instagram %}{{social.instagram}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 bi bi-instagram"></i></a>
+                            <a href="{% if social.youtube %}{{social.youtube}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 bi bi-youtube"></i></a>
                     {% endfor %}
                 </li>
             </ul>

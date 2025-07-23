@@ -26,7 +26,7 @@
                     <div class="uc-navbar-center gap-2 lg:gap-3 flex-1">
                         <ul class="uc-navbar-nav gap-3 justify-between flex-1 fs-6 fw-bold" style="--uc-nav-height: 48px">
                             <li>
-                                <a href="javascript:void(0);"><span class="icon-1 unicon-finance"></span></a>
+                                <a href="javascript:void(0);"><span class="icon-1 bi bi-bank2"></span></a>
                                 <div class="uc-navbar-dropdown ft-primary text-unset p-3 pb-4 rounded-0 hide-scrollbar" data-uc-drop=" offset: 0; boundary: !.navbar-container; stretch: x; animation: uc-animation-slide-top-small; duration: 150;">
                                     <div class="row child-cols col-match g-2">
                                         <div class="col-2">
@@ -70,16 +70,16 @@
                                                 <ul class="nav-x gap-2 mt-3">
                                                     {% for social in social_accounts %}
                                                     <li>
-                                                        <a href="{% if social.facebook %}{{social.facebook}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-facebook"></i></a>
+                                                        <a href="{% if social.facebook %}{{social.facebook}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 bi bi-facebook"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% if social.twitter %}{{social.twitter}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-x-filled"></i></a>
+                                                        <a href="{% if social.twitter %}{{social.twitter}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 bi bi-twitter-x"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% if social.instagram %}{{social.instagram}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-instagram"></i></a>
+                                                        <a href="{% if social.instagram %}{{social.instagram}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 bi bi-instagram"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% if social.youtube %}{{social.youtube}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 unicon-logo-youtube"></i></a>
+                                                        <a href="{% if social.youtube %}{{social.youtube}}{% else %}javascript:void(0);{% endif %}" target="_blank"><i class="icon icon-2 bi bi-youtube"></i></a>
                                                     </li>
                                                     {% endfor %}
                                                 </ul>
@@ -262,7 +262,7 @@
                         </div>
                         <div class="uc-navbar-item d-none lg:d-inline-flex">
                             <a class="btn btn-xs gap-narrow ps-1 border rounded-pill fw-bold dark:text-white hover:bg-gray-25 dark:hover:bg-gray-900" href="/#live_now" data-uc-scroll="offset: 128">
-                                <i class="icon icon-narrow unicon-dot-mark text-red" data-uc-animate="flash"></i>
+                                <i class="bi bi-dot text-red" style="font-size:35px;" data-uc-animate="flash"></i>
                                 <span>Trending</span>
                             </a>
                         </div>
@@ -282,7 +282,7 @@
                     <div class="uc-navbar-right gap-2 lg:gap-3">
                         <div class="uc-navbar-item d-inline-flex lg:d-none">
                             <a class="btn btn-xs gap-narrow ps-1 border rounded-pill fw-bold dark:text-white hover:bg-gray-25 dark:hover:bg-gray-900" href="/#live_now" data-uc-scroll="offset: 128">
-                                <i class="icon icon-narrow unicon-dot-mark text-red" data-uc-animate="flash"></i>
+                                <i class="bi bi-dot text-red" style="font-size:35px;"data-uc-animate="flash"></i>
                                 <span>Trending</span>
                             </a>
                         </div>
@@ -294,17 +294,17 @@
                         <div class="uc-navbar-item d-none lg:d-inline-flex">
                             {% if request.user.is_authenticated %}
                             <a class="uc-account-trigger position-relative btn btn-sm border-0 p-0 gap-narrow duration-0 dark:text-white" href="#uc-cart-panel" data-uc-toggle>
-                                <i class="icon icon-2 fw-medium unicon-user-avatar"></i> {{request.user.username}}
+                                <i class="bi bi-person-circle" style="font-size:20px"></i> {{request.user.username}}
                             </a>
                             {% else %}
                             <a class="uc-account-trigger position-relative btn btn-sm border-0 p-0 gap-narrow duration-0 dark:text-white" href="#uc-account-modal" data-uc-toggle>
-                                <i class="icon icon-2 fw-medium unicon-user-avatar"></i> Login
+                                <i class="bi bi-person-circle" style="font-size:20px"></i> Login
                             </a>
                             {% endif %}
                         </div>
                         <div class="uc-navbar-item d-none lg:d-inline-flex">
                             <a class="uc-search-trigger cstack text-none text-dark dark:text-white" href="#uc-search-modal" data-uc-toggle>
-                                <i class="icon icon-2 fw-medium unicon-search"></i>
+                                <i class="bi bi-search" style="font-size:20px;"></i>
                             </a>
                         </div>
                         <div class="uc-navbar-item d-none lg:d-inline-flex">
