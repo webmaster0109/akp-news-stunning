@@ -83,7 +83,8 @@ class News(HomeBaseModel):
     
     # Publishing information
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='articles', help_text="Author of the article")
-    category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE, related_name='news', help_text="Category of the article")
+    category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE, related_name='news', help_text="Category of the article", null=True, blank=True)
+    subcategory = models.ForeignKey(NewsSubCategory, on_delete=models.CASCADE, related_name='news', help_text="Subcategory of the article", null=True, blank=True)
     tags = models.ManyToManyField(NewsTag, related_name='news', blank=True, help_text="Tags associated with the article")
     
     # Metadata
@@ -101,6 +102,10 @@ class News(HomeBaseModel):
         return self.comments.filter(is_approved=True).count()
     
     def clean(self, *args, **kwargs):
+        if self.category and self.subcategory:
+            raise ValidationError({
+                'subcategory': "You cannot select both a category and a subcategory. Please choose one."
+            })
         if not self.title:
             raise ValidationError({
                 'title': "Title cannot be empty."

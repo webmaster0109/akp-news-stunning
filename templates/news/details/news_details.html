@@ -91,11 +91,17 @@
                         </li>
                     </ul>
                 </div>
+                {% if article.featured_image %}
                 <figure class="featured-image m-0">
                     <figure class="featured-image m-0 ratio ratio-2x1 rounded uc-transition-toggle overflow-hidden bg-gray-25 dark:bg-gray-800">
                         <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
                     </figure>
                 </figure>
+                {% elif article.featured_video %}
+                <figure class="featured-video m-0">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{article.featured_video}}?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </figure>
+                {% endif %}
             </div>
         </div>
     </div>
