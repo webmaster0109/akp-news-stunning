@@ -36,7 +36,7 @@
                                 <article class="post type-post panel vstack gap-2">
                                     <div class="post-image panel overflow-hidden">
                                         <figure class="featured-image m-0 ratio ratio-16x9 rounded uc-transition-toggle overflow-hidden bg-gray-25 dark:bg-gray-800">
-                                            <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{{article.featured_image.url}}" data-src="{{article.featured_image.url}}" alt="{{article.title}}" data-uc-img="loading: lazy">
+                                            <img class="media-cover image uc-transition-scale-up uc-transition-opaque" src="{% if article.featured_image %}{{article.featured_image.url}}{% else %}https://img.youtube.com/vi/{{article.featured_video}}/hqdefault.jpg{% endif %}" data-src="{% if article.featured_image %}{{article.featured_image.url}}{% else %}https://img.youtube.com/vi/{{article.featured_video}}/hqdefault.jpg{% endif %}" alt="{{article.title}}" data-uc-img="loading: lazy">
                                             <a href="{% url 'news_details' article.slug %}" class="position-cover" data-caption="{{article.title}}"></a>
                                         </figure>
                                         <div class="post-category hstack gap-narrow position-absolute top-0 start-0 m-1 fs-7 fw-bold h-24px px-1 rounded-1 shadow-xs bg-white text-primary">
