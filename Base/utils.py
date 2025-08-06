@@ -3,7 +3,7 @@ from settings.models import Settings
 
 def get_categories(request):
     return {
-        'categories': NewsCategory.objects.all().order_by('order'),
+        'categories': NewsCategory.objects.prefetch_related('subcategories').all().order_by('order'),
     }
 
 def social_accounts_context(request):
