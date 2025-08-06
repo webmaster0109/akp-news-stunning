@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi" dir="ltr">
   <head>
@@ -54,6 +55,10 @@
     <meta name="twitter:image" content="https://pub-0bed9939c4c74048aebd9a09275346e7.r2.dev/akp_logo_new.jpg" />
     {% endblock %}
 
+    {% for heading in header_settings %}
+      {{ heading.value|safe }}
+    {% endfor %}
+
     <link rel="canonical" href="" />
 
     <link
@@ -82,6 +87,7 @@
 
     <!-- include scripts -->
     <script src="https://pub-0bed9939c4c74048aebd9a09275346e7.r2.dev/js/uni-core/js/uni-core-bundle.min.js"></script>
+
   </head>
   <body
     class="uni-body panel bg-white text-gray-900 dark:bg-black dark:text-white text-opacity-50 overflow-x-hidden"
@@ -237,6 +243,10 @@
         searchInput.addEventListener("input", debounce(fetchLiveResults, 300));
       });
     </script>
+
+    {% for body in body_settings %}
+      {{ body.value|safe }}
+    {% endfor %}
 
     <!-- include jquery & bootstrap js -->
     <script defer src="https://pub-0bed9939c4c74048aebd9a09275346e7.r2.dev/js/libs/jquery.min.js"></script>

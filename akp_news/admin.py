@@ -4,10 +4,14 @@ from .models import *
 
 # Register your models here.
 
+class NewsTagAdmin(admin.StackedInline):
+    model = NewsTag
+    extra = 2
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'author', 'category', 'is_published')
+    list_display = ('title', 'slug', 'featured_image', 'author', 'category', 'is_published')
     prepopulated_fields = {'slug': ('title',)}
+    # inlines = [NewsTagAdmin]
 
 limited_admin_site.register(News, NewsAdmin)
 
@@ -17,11 +21,18 @@ limited_admin_site.register(NewsHomeBanner)
 limited_admin_site.register(LiveUpdates)
 limited_admin_site.register(Advertisements)
 limited_admin_site.register(SocialAccount)
+limited_admin_site.register(AboutUs)
 
+
+
+class NewsSubCategoryAdmin(admin.StackedInline):
+    model = NewsSubCategory
+    extra = 1
 
 class NewsCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'description')
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [NewsSubCategoryAdmin]
 
 limited_admin_site.register(NewsCategory, NewsCategoryAdmin)
 

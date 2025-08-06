@@ -199,6 +199,12 @@
             height: auto;
         }
 
+        @media (max-width: 768px) {
+            .pdf-canvas {
+                max-width: none;
+            }
+        }
+
         .loading {
             display: flex;
             flex-direction: column;
@@ -813,11 +819,11 @@
         });
 
         // Responsive zoom on window resize
-        window.addEventListener('resize', function() {
-            if (pdfDocument && zoomSelect.value === 'fit') {
-                fitToWidth();
-            }
-        });
+        // window.addEventListener('resize', function() {
+        //     if (pdfDocument && zoomSelect.value === 'fit') {
+        //         fitToWidth();
+        //     }
+        // });
     </script>
 </body>
 </html>

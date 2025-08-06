@@ -26,4 +26,4 @@ class EpaperAdmin(admin.ModelAdmin):
         return f"https://aajkaprahari.com/s/{obj.short_url.short_url}/" if obj.short_url else 'No URL'
 
 limited_admin_site.register(Epaper, EpaperAdmin)
-limited_admin_site.register(ShortURL)
+admin.site.register(ShortURL)

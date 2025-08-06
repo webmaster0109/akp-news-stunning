@@ -16,6 +16,8 @@
 
 {% if category.name == "ई-पेपर" %}
 {% include "epapers/epaper_list.html" %}
+{% elif category.name == "हमारे बारे में" %}
+{% include "news/details/about-us.html" %}
 {% else %}
 <div class="section py-3 sm:py-6 lg:py-9">
     <div class="container max-w-xl">

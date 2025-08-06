@@ -43,10 +43,12 @@
                                                                             </div>
                                                                         </div>
                                                                         <div>
-                                                                            <a href="index.html#post_comment" class="post-comments text-none hstack gap-narrow">
-                                                                                <i class="icon-narrow unicon-chat"></i>
-                                                                                <span>5</span>
+                                                                            {% if banner.banner_news.get_total_comments > 0 %}
+                                                                            <a href="{% url 'news_details' banner.banner_news.slug %}" class="post-comments text-none hstack gap-narrow">
+                                                                                <i class="bi bi-chat-left-text"></i>
+                                                                                <span>{{banner.banner_news.get_total_comments}}</span>
                                                                             </a>
+                                                                            {% endif %}
                                                                         </div>
                                                                     </div>
                                                                 </div>

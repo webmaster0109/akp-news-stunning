@@ -8,6 +8,8 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import NoReverseMatch, reverse
 from Base.helpers import optimize_image
 
+from django.core.exceptions import ValidationError
+
 class NewsTagBanner(BaseModel):
     tag_name = models.CharField(max_length=100, null=True, blank=True)
     news_link = models.URLField(null=True, blank=True)
@@ -20,13 +22,46 @@ class NewsCategory(BaseModel):
     name = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(max_length=100, null=True, blank=True, unique=True)
     description = models.TextField(null=True, blank=True)
+    order = models.PositiveIntegerField(default=0, null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = "News Categories"
+        ordering = ['-order']
     
     def get_total_category(self):
         return self.news.count()
 
     def __str__(self):
         return self.name
+    
+class NewsSubCategory(BaseModel):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    slug = models.SlugField(max_length=100, null=True, blank=True, unique=True)
+    description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE, related_name='subcategories')
+
+    def get_total_subcategory(self):
+        return self.news.count()
+
+    def __str__(self):
+        return self.name
+
+class AboutUs(models.Model):
+    title = models.CharField(max_length=255, null=True, blank=True)
+    content = CKEditor5Field(config_name='extends', null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "About Us"
+
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        if len(self.content) < 5:
+            raise ValidationError({
+                'content': "Content must be at least 5 characters long."
+            })
+        super().save(*args, **kwargs)
 
 class NewsTag(BaseModel):
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -40,15 +75,16 @@ class NewsTag(BaseModel):
 
 class News(HomeBaseModel):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=280, unique=True)
-    content = CKEditor5Field(config_name='extends', null=True, blank=True)
-    summary = models.TextField(blank=True)
-    featured_image = models.ImageField(upload_to='news_images/')
+    slug = models.SlugField(max_length=280, unique=True, help_text="Unique URL slug for the article. Use only alphanumeric characters, underscores, and hyphens. Example: 'my-article-title'.")
+    content = CKEditor5Field(config_name='extends', null=True, blank=True, help_text="Content of the article.")
+    summary = models.TextField(blank=True, help_text="Short summary of the article (max 200 characters)")
+    featured_image = models.ImageField(upload_to='news_images_v2/', help_text="Upload a featured image for this article (Recommended size: 16:9)", null=True, blank=True)
+    featured_video = models.CharField(max_length=100, null=True, blank=True, help_text="YouTube or Vimeo link for featured video (Recommended Link Format: VIDEO_ID Only)")
     
     # Publishing information
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='articles')
-    category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE, related_name='news')
-    tags = models.ManyToManyField(NewsTag, related_name='news', blank=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='articles', help_text="Author of the article")
+    category = models.ForeignKey(NewsCategory, on_delete=models.CASCADE, related_name='news', help_text="Category of the article")
+    tags = models.ManyToManyField(NewsTag, related_name='news', blank=True, help_text="Tags associated with the article")
     
     # Metadata
     published_at = models.DateTimeField(null=True, blank=True)
@@ -60,6 +96,32 @@ class News(HomeBaseModel):
     class Meta:
         verbose_name_plural = "News Articles"
         ordering = ['-published_at']
+
+    def get_total_comments(self):
+        return self.comments.filter(is_approved=True).count()
+    
+    def clean(self, *args, **kwargs):
+        if not self.title:
+            raise ValidationError({
+                'title': "Title cannot be empty."
+            })
+        if not self.content:
+            raise ValidationError({
+                'content': "Content cannot be empty."
+            })
+        if not self.slug:
+            raise ValidationError({
+                'slug': "Slug cannot be empty."
+            })
+        if self.featured_image and self.featured_video:
+            raise ValidationError(
+                "You can only provide a featured image OR a featured video, not both."
+            )
+        if self.featured_image and not self.featured_image.name.endswith(('.jpg', '.jpeg', '.png', '.webp')):
+            raise ValidationError({
+                'featured_image': "Featured image must be a valid image file (jpg, jpeg, png, webp)."
+            })
+        super().clean(*args, **kwargs)
 
     def get_absolute_url(self):
         try:
@@ -113,20 +175,26 @@ class News(HomeBaseModel):
         return self.title
     
     def save(self, *args, **kwargs):
-        if self.slug:
-            try:
-                old_instance = News.objects.get(slug=self.slug)
-                if old_instance.featured_image != self.featured_image:
-                    optimized_image = optimize_image(self.featured_image)
-                    if optimized_image:
-                        self.featured_image = optimized_image
-                    else:
-                        self.featured_image = old_instance.featured_image
-                    super().save(*args, **kwargs)
-                    return
-            except News.DoesNotExist:
-                pass
-        if self.featured_image:
+        # if self.slug:
+        #     try:
+        #         old_instance = News.objects.get(slug=self.slug)
+        #         if old_instance.featured_image != self.featured_image:
+        #             optimized_image = optimize_image(self.featured_image)
+        #             if optimized_image:
+        #                 self.featured_image = optimized_image
+        #             else:
+        #                 self.featured_image = old_instance.featured_image
+        #             super().save(*args, **kwargs)
+        #             return
+        #     except News.DoesNotExist:
+        #         pass
+        # Optimize the featured image if it exists
+        try:
+            old_instance = News.objects.get(slug=self.slug)
+            image_changed = old_instance.featured_image != self.featured_image
+        except News.DoesNotExist:
+            image_changed = True
+        if image_changed and self.featured_image:
             optimized_image = optimize_image(self.featured_image)
             if optimized_image:
                 self.featured_image = optimized_image

@@ -23,7 +23,7 @@ class WebBaseModel(models.Model):
 class WebStory(WebBaseModel):
     title = models.CharField(max_length=255, null=True, blank=True)
     slug = models.SlugField(max_length=20, default=get_short_id, unique=True, editable=False)
-    cover_image = models.ImageField(upload_to='webstories/cover_images/', null=True, blank=True, help_text="Cover Image. Recommended size: 600x1200px. Portrait Image.",)
+    cover_image = models.ImageField(upload_to='webstories_v2/cover_images/', null=True, blank=True, help_text="Cover Image. Recommended size: 600x800px. Portrait Image.",)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -35,20 +35,29 @@ class WebStory(WebBaseModel):
         return self.title
     
     def save(self, *args, **kwargs):
-        if self.pk:
-            try:
-                old_instance = WebStory.objects.get(pk=self.pk)
-                if old_instance.cover_image != self.cover_image:
-                    optimized_image = optimize_image(self.cover_image)
-                    if optimized_image:
-                        self.cover_image = optimized_image
-                    else:
-                        self.cover_image = old_instance.cover_image
-                    super().save(*args, **kwargs)
-                    return
-            except WebStory.DoesNotExist:
-                    pass
-        if self.cover_image:
+        # if self.pk:
+        #     try:
+        #         old_instance = WebStory.objects.get(pk=self.pk)
+        #         if old_instance.cover_image != self.cover_image:
+        #             optimized_image = optimize_image(self.cover_image)
+        #             if optimized_image:
+        #                 self.cover_image = optimized_image
+        #             else:
+        #                 self.cover_image = old_instance.cover_image
+        #             super().save(*args, **kwargs)
+        #             return
+        #     except WebStory.DoesNotExist:
+        #             pass
+        # if self.cover_image:
+        #     optimized_image = optimize_image(self.cover_image)
+        #     if optimized_image:
+        #         self.cover_image = optimized_image
+        try:
+            old_instance = WebStory.objects.get(pk=self.pk)
+            image_changed = old_instance.cover_image != self.cover_image
+        except WebStory.DoesNotExist:
+            image_changed = True
+        if image_changed and self.cover_image:
             optimized_image = optimize_image(self.cover_image)
             if optimized_image:
                 self.cover_image = optimized_image
@@ -57,7 +66,7 @@ class WebStory(WebBaseModel):
 class WebStorySlide(WebBaseModel):
     order = models.PositiveIntegerField(default=1, help_text="Order of the slide in the story. Lower numbers appear first.")
     story = models.ForeignKey(WebStory, related_name='slides', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='webstories/slides/', help_text="Image for the slide. Recommended size: 600x1200px.", null=True, blank=True)
+    image = models.ImageField(upload_to='webstories_v2/slides/', help_text="Image for the slide. Recommended size: 600x800px.", null=True, blank=True)
     caption = models.TextField(help_text="Caption text overlay for the slide.", blank=True, null=True)
 
     class Meta:
@@ -69,20 +78,29 @@ class WebStorySlide(WebBaseModel):
         return f"Slide {self.order} of '{self.story.title}'"
     
     def save(self, *args, **kwargs):
-        if self.pk:
-            try:
-                old_instance = WebStorySlide.objects.get(pk=self.pk)
-                if old_instance.image != self.image:
-                    optimized_image = optimize_image(self.image)
-                    if optimized_image:
-                        self.image = optimized_image
-                    else:
-                        self.image = old_instance.image
-                    super().save(*args, **kwargs)
-                    return
-            except WebStorySlide.DoesNotExist:
-                pass
-        if self.image:
+        # if self.pk:
+        #     try:
+        #         old_instance = WebStorySlide.objects.get(pk=self.pk)
+        #         if old_instance.image != self.image:
+        #             optimized_image = optimize_image(self.image)
+        #             if optimized_image:
+        #                 self.image = optimized_image
+        #             else:
+        #                 self.image = old_instance.image
+        #             super().save(*args, **kwargs)
+        #             return
+        #     except WebStorySlide.DoesNotExist:
+        #         pass
+        # if self.image:
+        #     optimized_image = optimize_image(self.image)
+        #     if optimized_image:
+        #         self.image = optimized_image
+        try:
+            old_instance = WebStorySlide.objects.get(pk=self.pk)
+            image_changed = old_instance.image != self.image
+        except WebStorySlide.DoesNotExist:
+            image_changed = True
+        if image_changed and self.image:
             optimized_image = optimize_image(self.image)
             if optimized_image:
                 self.image = optimized_image

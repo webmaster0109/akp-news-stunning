@@ -52,7 +52,7 @@ def index_akp_news(request):
 
     news_tags = NewsTagBanner.objects.all()
     
-    news_banner = NewsHomeBanner.objects.filter(is_active=True)
+    news_banner = NewsHomeBanner.objects.filter(is_active=True).order_by('-created_at')
 
     article = News.objects.filter(is_published=True, is_active=True).select_related('author', 'category').prefetch_related('tags').order_by('-published_at')
 
@@ -253,10 +253,13 @@ def add_comment_view(request):
 def category_details(request, slug):
     category = get_object_or_404(NewsCategory, slug=slug)
 
+    about_us = AboutUs.objects.all()  # Assuming you have a single AboutUs object
+
     epapers = Epaper.objects.filter(is_active=True).order_by('-timestamp')
 
     context = {
         'category': category,
+        'about_us': about_us,
         'epapers': epapers
     }
     return render(request, template_name='news/details/category_details.html', context=context)

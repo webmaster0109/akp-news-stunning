@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-6txf^pg1^h9sxzf5wpj1g*kp0z67c)@)_ie#^($c(58rh_j%ty"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "akp_epapers",
     "admin_akp",
     "webstories",
+    "settings",
 ]
 
 AUTH_USER_MODEL = 'akp_accounts.CustomUser'
@@ -75,6 +76,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "Base.utils.get_categories",
                 "Base.utils.social_accounts_context",
+                "Base.utils.get_header_settings",
+                "Base.utils.get_body_settings",
             ],
         },
     },

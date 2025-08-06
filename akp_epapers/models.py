@@ -13,7 +13,7 @@ import random
 
 
 class Epaper(HomeBaseModel):
-    file = models.FileField(upload_to='epapers/')
+    file = models.FileField(upload_to='akp_epapers/pdfs/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     timestamp = models.DateField(null=True, blank=True)
 
@@ -66,14 +66,12 @@ class Epaper(HomeBaseModel):
                 # --- 1. Extract Metadata ---
                 metadata = pdf_document.metadata
                 # 'subject' is the standard PDF metadata field for a description
-                self.meta_description = metadata.get('subject') 
-                self.meta_keywords = metadata.get('keywords')
 
                 # If description is still missing, extract text from the first page as a fallback
                 if not self.meta_description and pdf_document.page_count > 0:
                     first_page = pdf_document.load_page(0)
                     # Get the first 40 words for a concise description
-                    self.meta_description = " ".join(first_page.get_text("text").split()[:40]) + "..."
+                    # self.meta_description = " ".join(first_page.get_text("text").split()[:40]) + "..."
 
                 # --- 2. Extract and Crop Thumbnail ---
                 if pdf_document.page_count > 0:
@@ -157,7 +155,7 @@ class Epaper(HomeBaseModel):
 
 class ShortURL(models.Model):
     epaper = models.OneToOneField(Epaper, on_delete=models.CASCADE, related_name='short_url')
-    short_url = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    short_url = models.CharField(max_length=255, unique=True, null=True, blank=True, editable=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

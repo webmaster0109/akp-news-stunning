@@ -15,11 +15,25 @@
                                         <article class="post type-post panel uc-transition-toggle gap-2">
                                             <div class="row child-cols g-2" data-uc-grid>
                                                 <div>
+                                                    <style>
+                                                        .post-title-web-story {
+                                                            font-size: 14px; 
+                                                            border: 1px solid #d4cece; 
+                                                            padding: 0 0 20px 0; 
+                                                            border-radius:10px;
+                                                        }
+
+                                                        @media (max-width: 768px) {
+                                                            .post-title-web-story {
+                                                                padding: 0 0 32px 0;
+                                                            }
+                                                        }
+                                                    </style>
                                                     <div class="post-header panel vstack justify-between gap-1">
-                                                        <h3 class="post-title m-0 text-truncate-2" style="font-size: 14px; border: 1px solid #d4cece; padding: 0 0 20px 0; border-radius:10px;">
+                                                        <h3 class="post-title post-title-web-story m-0 text-truncate-2">
                                                             <a class="text-none hover:text-primary duration-150" href="{% url 'story_detail' story.slug %}">
                                                             <img src="{{story.cover_image.url}}" style="width:100%;"/>    
-                                                            <p class="p-1 text-black dark:text-white">{{story.title|truncatewords:10}}</p>
+                                                            <p class="p-1 text-black dark:text-white">{{story.title|truncatewords:8}}</p>
                                                             </a>
                                                         </h3>
                                                     </div>
