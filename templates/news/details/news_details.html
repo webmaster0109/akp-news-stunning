@@ -7,7 +7,7 @@
 {% block og_tags %}
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{article.title}} - Aaj Ka Prahari">
-    <meta property="og:description" content="{{article.content|safe|slice:"150"}} | Aaj Ka Prahari">
+    <meta property="og:description" content="{{article.content|safe|slice:'150'}} | Aaj Ka Prahari">
     <meta property="og:url" content="">
     <meta property="og:site_name" content="हिंदी समाचार मुखपृष्ठ - Aaj Ka Prahari">
     <meta property="og:image" content="{% if article.featured_image %}{{article.featured_image.url}}{% elif article.featured_video %}https://img.youtube.com/vi/{{article.featured_video}}/hqdefault.jpg{% endif %}">
@@ -20,7 +20,7 @@
 {% block twitter_tags %}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{article.title}} | Aaj Ka Prahari">
-    <meta name="twitter:description" content="{{article.content|safe|slice:"150"}}">
+    <meta name="twitter:description" content="{{article.content|safe|slice:'150'}}">
     <meta name="twitter:image" content="{% if article.featured_image %}{{article.featured_image.url}}{% elif article.featured_video %}https://img.youtube.com/vi/{{article.featured_video}}/hqdefault.jpg{% endif %}">
 {% endblock %}
 
@@ -172,15 +172,15 @@
                 <div class="lg:col-4">
                     <div class="uc-sticky-placeholder" style="height: 0px; width: 0px; margin: 0px;" hidden=""></div><div class="sidebar-wrap panel vstack gap-2 uc-sticky" data-uc-sticky="end: true;" style="position: sticky; top: 0px;">
                         <div class="right-sidebar">
-                            {% for ad in random_ads|slice:":1" %}
-                            {% if ad.banner_size == 'News Article Banner 600x700' %}
+                            {% with ad=random_ads %}
+                            {% if ad %}
                                 <section id="media_image-1" class="widget widget_media_image">
                                     <a href="{{ad.banner_link}}" target="_blank">
                                     <img width="600" height="700" src="{{ad.banner_image.url}}" class="image wp-image-10098 attachment-full size-full" alt="{{ad.banner_news.title}}" decoding="async" srcset="{{ad.banner_image.url}} 600w, {{ad.banner_image.url}} 257w" sizes="(max-width: 600px) 100vw, 600px">
                                     </a>
                                 </section>
                             {% endif %}
-                            {% endfor %}
+                            {% endwith %}
                         </div>
                     </div>
                 </div>

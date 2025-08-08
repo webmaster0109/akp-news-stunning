@@ -95,8 +95,8 @@ def index_akp_news(request):
 
 def news_details(request, slug):
     article = get_object_or_404(News, slug=slug, is_published=True)
-    active_ads = Advertisements.objects.filter(is_active=True)
-    random_ads = get_random_ad_for_size('News Article Banner 600x700') if active_ads.exists() else None
+    active_ads = get_random_ad_for_size('News Article Banner 600x700')
+    random_ads = active_ads if active_ads else None
 
     comments = get_nested_comments(article.id)
 

@@ -7,6 +7,8 @@ from PIL import Image
 from io import BytesIO
 import os
 
+from django.core.exceptions import ValidationError
+
 from Base.helpers import optimize_image
 
 def get_short_id():
@@ -22,7 +24,7 @@ class WebBaseModel(models.Model):
 
 class WebStory(WebBaseModel):
     title = models.CharField(max_length=255, null=True, blank=True)
-    slug = models.SlugField(max_length=20, default=get_short_id, unique=True, editable=False)
+    slug = models.SlugField(max_length=20, default=get_short_id, editable=False, unique=True)
     cover_image = models.ImageField(upload_to='webstories_v2/cover_images/', null=True, blank=True, help_text="Cover Image. Recommended size: 600x800px. Portrait Image.",)
     is_active = models.BooleanField(default=True)
 
@@ -67,7 +69,7 @@ class WebStorySlide(WebBaseModel):
     order = models.PositiveIntegerField(default=1, help_text="Order of the slide in the story. Lower numbers appear first.")
     story = models.ForeignKey(WebStory, related_name='slides', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='webstories_v2/slides/', help_text="Image for the slide. Recommended size: 600x800px.", null=True, blank=True)
-    caption = models.TextField(help_text="Caption text overlay for the slide.", blank=True, null=True)
+    caption = models.TextField(help_text="Caption text overlay for the slide. Recommended length: 170-200 characters.", blank=True, null=True)
 
     class Meta:
         verbose_name = "Web Story Slide"
@@ -76,6 +78,17 @@ class WebStorySlide(WebBaseModel):
 
     def __str__(self):
         return f"Slide {self.order} of '{self.story.title}'"
+    
+    def clean(self, *args, **kwargs):
+        if self.order < 1:
+            raise ValidationError({
+                "order": "Order must be a positive integer greater than 0."
+            })
+        if self.caption and len(self.caption) > 200:
+            raise ValidationError({
+                "caption": f"Your caption has {len(self.caption)} characters. Caption must not exceed 200 characters."
+            })
+        super().clean(*args, **kwargs)
     
     def save(self, *args, **kwargs):
         # if self.pk:
