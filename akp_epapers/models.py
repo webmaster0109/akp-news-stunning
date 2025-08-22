@@ -9,6 +9,7 @@ from io import BytesIO
 from PIL import Image, ImageOps
 import string
 import random
+from django.urls import reverse
 # Create your models here.
 
 
@@ -24,8 +25,11 @@ class Epaper(HomeBaseModel):
     def __str__(self):
         return self.meta_title
     
-    def get_new_absolute_url(self):
-        return f"/epapers/{self.id}/"
+    def get_absolute_url(self):
+        try:
+            return reverse('view_epaper', kwargs={'epaper_id': self.id})
+        except Exception as e:
+            return None
 
     def save(self, *args, **kwargs):
         """
@@ -160,6 +164,10 @@ class ShortURL(models.Model):
 
     class Meta:
         verbose_name_plural = "Short URLs"
+
+    def get_absolute_url(self):
+        return reverse("redirect_short_url", kwargs={"short_url": self.short_url})
+    
 
     def __str__(self):
         return f"{self.epaper} - {self.short_url}"

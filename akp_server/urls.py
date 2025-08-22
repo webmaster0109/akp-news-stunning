@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
-
 from django.conf import settings
 # from django.conf.urls.static import static
 # from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -9,8 +8,20 @@ from akp_epapers.views import download_epaper_view, view_epaper, redirect_short_
 from akp_accounts.admin import limited_admin_site
 
 from akp_news import views as server_views
-
 from webstories.views import story_detail
+
+from akp_news.sitemaps import NewsSitemap, NewsCategorySitemap, NewsTagSitemap, HomeSitemap
+from django.contrib.sitemaps.views import sitemap
+from akp_epapers.sitemaps import EpaperSitemap
+
+sitemaps = {
+    'home': HomeSitemap,
+    'news': NewsSitemap,
+    'category': NewsCategorySitemap,
+    'tag': NewsTagSitemap,
+    'epaper': EpaperSitemap,
+}
+
 
 urlpatterns = [
     path("super-private-admin/", admin.site.urls, name="admin_login"),
@@ -26,14 +37,20 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+]
+
+urlpatterns += [
     path('i18n/', include('django.conf.urls.i18n')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
+  pass
     # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += [
-        re_path(r'^.*/$', server_views.handler404, name='handler404_testing'),
-    ]
+    # urlpatterns += [
+    #     re_path(r'^.*/$', server_views.handler404, name='handler404_testing'),
+    # ]
 
 
 # urlpatterns += staticfiles_urlpatterns()

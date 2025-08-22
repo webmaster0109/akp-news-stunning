@@ -1,0 +1,37 @@
+{% extends "base/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<style>
+  .google-account-button {
+    margin: 1rem;
+    padding-left: 150px;
+    padding-right: 150px;
+    text-align: center;
+  }
+  
+</style>
+<div class="section py-3 sm:py-6 lg:py-10">
+  <div class="container max-w-xl">
+    <div class="google-account-button">
+      <h2 class="text-dark dark:text-white py-3">Sign In Via Google</h2>
+      <p class="h6 text-dark dark:text-white mb-8">You are about to sign in using a third-party account from Google.</p>
+      <form method="post">
+          {% csrf_token %}
+            <button type="submit" class="btn btn-danger col-6">
+              <i class="icon bi bi-google"></i> {% trans "Continue with Google" %}
+            </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% if user.is_authenticated %}
+<script>
+  // User is authenticated, you can add your custom JavaScript here
+  console.log("User is authenticated");
+  // Redirect to the desired page or perform any other actions
+  window.location.href = "/";
+</script>
+{% endif %}
+{% endblock content %}

@@ -30,6 +30,14 @@ class NewsCategory(BaseModel):
     
     def get_total_category(self):
         return self.news.count()
+    
+    def get_absolute_url(self):
+        try:
+            if hasattr(self, 'slug') and self.slug:
+                return reverse('category_details', kwargs={'slug': self.slug})
+        except NoReverseMatch:
+            return "#"
+        return "#"
 
     def __str__(self):
         return self.name
@@ -69,6 +77,14 @@ class NewsTag(BaseModel):
 
     def get_total_tag(self):
         return self.news.count()
+    
+    def get_absolute_url(self):
+        try:
+            if hasattr(self, 'slug') and self.slug:
+                return reverse('tags_detail', kwargs={'slug': self.slug})
+        except NoReverseMatch:
+            return "#"
+        return "#"
 
     def __str__(self):
         return self.name
@@ -103,6 +119,11 @@ class News(HomeBaseModel):
     
     def clean(self, *args, **kwargs):
         if self.category and self.subcategory:
+            if self.category.name == "राज्य":
+                selected_category = "राज्य"
+                raise ValidationError({
+                    'category': f"You cannot select {selected_category} as it has subcategories. So you have to select a subcategory."
+                })
             raise ValidationError({
                 'subcategory': "You cannot select both a category and a subcategory. Please choose one."
             })
