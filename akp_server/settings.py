@@ -84,7 +84,6 @@ MIDDLEWARE = [
 
     # third-party
     'allauth.account.middleware.AccountMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = "akp_server.urls"
