@@ -12,3 +12,6 @@ django-storages
 django-storages[s3]
 django-allauth
 django-allauth[socialaccount]
+
+django-import-export
+django-import-export[all]

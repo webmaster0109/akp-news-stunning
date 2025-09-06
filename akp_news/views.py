@@ -50,7 +50,7 @@ def index_akp_news(request):
     cache_key = 'homepage_context_data'
     context = cache.get(cache_key)
 
-    news_tags = NewsTagBanner.objects.all()
+    news_tags = NewsTagBanner.objects.all().order_by('-created_at')
     
     news_banner = NewsHomeBanner.objects.filter(is_active=True).order_by('-created_at')
 

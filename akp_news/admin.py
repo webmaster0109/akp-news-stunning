@@ -1,6 +1,7 @@
 from django.contrib import admin
 from akp_accounts.admin import limited_admin_site
 from .models import *
+from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 
@@ -8,7 +9,7 @@ class NewsTagAdmin(admin.StackedInline):
     model = NewsTag
     extra = 2
 
-class NewsAdmin(admin.ModelAdmin):
+class NewsAdmin(ImportExportModelAdmin):
     list_display = ('title', 'slug', 'featured_image', 'author', 'category', 'is_published')
     prepopulated_fields = {'slug': ('title',)}
     # inlines = [NewsTagAdmin]

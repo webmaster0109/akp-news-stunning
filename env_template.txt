@@ -1,0 +1,25 @@
+# Django Configuration
+SECRET_KEY=your-secret-key-here-change-this-in-production
+DEBUG=False
+ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+
+# Supabase PostgreSQL Database Configuration
+DATABASE_NAME=your_database_name
+DATABASE_USER=your_database_user
+DATABASE_PASSWORD=your_database_password
+DATABASE_HOST=db.your_project_ref.supabase.co
+DATABASE_PORT=5432
+
+# Cloudflare R2 Storage Configuration
+CLOUDFLARE_R2_BUCKET=your-bucket-name
+CLOUDFLARE_R2_BUCKET_ENDPOINT=https://your-account-id.r2.cloudflarestorage.com
+CLOUDFLARE_R2_ACCESS_KEY=your-access-key
+CLOUDFLARE_R2_SECRET_KEY=your-secret-key
+
+# Email Configuration
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password

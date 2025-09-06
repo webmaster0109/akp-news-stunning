@@ -10,6 +10,7 @@ urlpatterns = [
 
     path('add-comment/', add_comment_view, name='add_comment'),
 
+    # Search endpoints
     path('search/', SearchResultsView.as_view(), name='search_results'),
     path('api/live-search/', live_search_api, name='live_search_api'),
 ]

@@ -57,6 +57,10 @@ INSTALLED_APPS = [
     "admin_akp",
     "webstories",
     "settings",
+
+    # import-export
+    'import_export',
+    # 'import_export.admin',
 ]
 
 SITE_ID = 1
@@ -76,8 +80,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
+    'django.middleware.cache.UpdateCacheMiddleware',
+
     # third-party
     'allauth.account.middleware.AccountMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = "akp_server.urls"
@@ -119,15 +126,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
-# DATABASES = {
-#     "default" : {
-#         'ENGINE': 'django_cf.d1_api',
-#         'CLOUDFLARE_DATABASE_ID': 'cf7be688-53f6-4e8d-b603-8a0c3440d50f',
-#         'CLOUDFLARE_ACCOUNT_ID': 'e160dbaa7bba5fcb8adecf4dfc188c7d',
-#         'CLOUDFLARE_TOKEN': 'X98WH89u6SUs2xOFFzHlcmJ-mdoGejhMKz_C08Xr',
-#     }
-# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
