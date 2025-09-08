@@ -22,6 +22,7 @@ sitemaps = {
     'epaper': EpaperSitemap,
 }
 
+from admin_akp.views import download_sqlite_db, db_download_page
 
 urlpatterns = [
     path("super-private-admin/", admin.site.urls, name="admin_login"),
@@ -38,6 +39,9 @@ urlpatterns = [
 
 urlpatterns += [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('admin-tools-db-download/', download_sqlite_db, name='download_sqlite_db'),
+    path('admin-tools/', db_download_page, name='db_download_page'),
+
 ]
 
 urlpatterns += [

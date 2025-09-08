@@ -44,4 +44,6 @@ def download_epaper_view(request, epaper_id):
         return JsonResponse({'status': 'success', 'url': epaper.file.url}, status=200)
     else:
         return JsonResponse({'status': 'error', 'message': 'E-Paper file not found.'}, status=404)
+
+
     

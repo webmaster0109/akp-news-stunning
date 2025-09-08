@@ -1,0 +1,110 @@
+{% extends 'base/index.html' %}
+
+{% block content %}
+<style>
+    .card { max-width:600px; margin: 2rem auto; padding: 1.5rem; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+    .progress-row { display:flex; align-items:center; gap:1rem; }
+    input[type="range"] { width:100%; }
+    .status { min-width: 120px; text-align: right; font-variant-numeric: tabular-nums; }
+    button { padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #888; background:#fff; cursor:pointer; }
+    button:disabled { opacity:0.5; cursor: not-allowed; }
+</style>
+<div class="card">
+    <h2>Download SQLite DB</h2>
+    <p>Only superusers should be here. Press <strong>Start Download</strong> to download the DB. Progress is updated as bytes arrive.</p>
+
+    <div style="margin-bottom:1rem;">
+      <button id="startBtn">Start Download</button>
+      <button id="cancelBtn" disabled>Cancel</button>
+    </div>
+
+    <div class="progress-row">
+      <input id="progressSlider" type="range" min="0" max="100" value="0" />
+      <div class="status"><span id="percentLabel">0%</span></div>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <div id="log" style="font-size:0.9rem;color:#333;white-space:pre-wrap;"></div>
+    </div>
+</div>
+
+<script>
+    (() => {
+      // Use Django's url tag so we always call the correct path
+      const downloadUrl = "{% url 'download_sqlite_db' %}";
+    
+      const startBtn = document.getElementById("startBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const slider    = document.getElementById("progressSlider");
+      const percent   = document.getElementById("percentLabel");
+      const logEl     = document.getElementById("log");
+    
+      let controller = null;
+    
+      function log(msg) { logEl.textContent = msg + "\n" + logEl.textContent; }
+      function updateProgress(p){ slider.value = p; percent.textContent = Math.round(p) + "%"; }
+    
+      startBtn.addEventListener("click", async () => {
+        startBtn.disabled = true; cancelBtn.disabled = false;
+        log("Starting download...");
+    
+        controller = new AbortController();
+        const signal = controller.signal;
+    
+        try {
+          // include credentials so Django session cookie is sent
+          const resp = await fetch(downloadUrl, { signal, credentials: 'same-origin' });
+          if (!resp.ok) throw new Error("Download failed: " + resp.status + " " + resp.statusText);
+    
+          const contentLength = resp.headers.get("Content-Length");
+          const total = contentLength ? parseInt(contentLength, 10) : null;
+    
+          if (!total) log("Server did not provide a Content-Length header — progress will be approximate.");
+          else log("Content-Length: " + total + " bytes");
+    
+          const reader = resp.body.getReader();
+          let received = 0;
+          const chunks = [];
+    
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            received += value.length;
+    
+            if (total) updateProgress((received / total) * 100);
+            else updateProgress(Math.min(98, (received / 1000000) * 100)); // approximate
+          }
+    
+          updateProgress(100);
+          log("Download complete. Preparing file...");
+    
+          const blob = new Blob(chunks);
+          const disposition = resp.headers.get("Content-Disposition") || "";
+          let filename = "db.sqlite3";
+          const match = disposition.match(/filename\*=UTF-8''(.+)|filename="?(.*?)"(?=;|$)/i);
+          if (match) filename = decodeURIComponent(match[1] || match[2]);
+    
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = blobUrl; a.download = filename;
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(blobUrl);
+    
+          log("Saved as: " + filename);
+          log("Downloaded DB file!");
+        } catch (err) {
+          if (err.name === "AbortError") log("Download canceled by user.");
+          else { console.error(err); log("Error: " + (err.message || err)); }
+        } finally {
+          startBtn.disabled = false; cancelBtn.disabled = true; controller = null;
+        }
+      });
+    
+      cancelBtn.addEventListener("click", () => {
+        if (controller) controller.abort();
+      });
+    
+    })();
+</script>
+{% endblock %}
